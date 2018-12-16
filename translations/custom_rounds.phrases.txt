@@ -1,0 +1,127 @@
+"Phrases"
+{
+	"Prefix"
+	{
+		"en"		"[CR]"
+	}
+
+
+
+
+	"CR_CHAT_Round_Start"
+	{
+		"#format"	"{1:s}"
+		"en"		"Round {1} started."
+		"ru"		"Раунд {1} начался."
+	}
+
+	"CR_CHAT_Force_Round_End"
+	{
+		"#format"	"{1:N}"
+		"en"		"{1} canceled current custom round."
+		"ru"		"{1} отменил текущий раунд."
+	}
+	
+	"CR_CHAT_Next_Round_Cancel"
+	{
+		"#format"	"{1:N}"
+		"en"		"{1} canceled next custom round."
+		"ru"		"{1} отменил следующий нестандартный раунд."
+	}
+	
+	"CR_CHAT_Change_Next_Round"
+	{
+		"#format"	"{1:N},{2:s}"
+		"en"		"{1} changed next custom round to {2}."
+		"ru"		"{1} сменил следующий нестандартный раунд на {2}."
+	}
+	
+	"CR_CHAT_Set_Next_Round"
+	{
+		"#format"	"{1:N},{2:s}"
+		"en"		"{1} set next custom round to {2}."
+		"ru"		"{1} сделал следующим нестандартным раундом {2}."
+	}
+	
+	"CR_CHAT_Set_Current_Round"
+	{
+		"#format"	"{1:N},{2:s}"
+		"en"		"{1} started custom round {2}."
+		"ru"		"{1} запустил нестандартный раунд {2}."
+	}
+
+
+
+
+	"CR_MENU_No_Next_Custom_Round"
+	{
+		"en"		"There is no next round."
+		"ru"		"Следующий раунд обычный."
+	}
+	
+	"CR_MENU_No_Custom_Round"
+	{
+		"en"		"Current round default."
+		"ru"		"Текущий раунд обычный."
+	}
+	
+	"CR_MENU_Round_End"
+	{
+		"en"		"Wait for round end."
+		"ru"		"Дождитесь конца раунда."
+	}
+	
+	"CR_MENU_Warmup"
+	{
+		"en"		"Wait for warmup end."
+		"ru"		"Дождитесь конца разминки."
+	}
+	
+	"CR_MENU_Now"
+	{
+		"en"		"That round"
+		"ru"		"Этот раунд"
+	}
+	
+	"CR_MENU_Next"
+	{
+		"en"		"Next round"
+		"ru"		"Следующий раунд"
+	}
+	
+	"CR_MENU_Interval"
+	{
+		"en"		"Wait some rounds."
+		"ru"		"Подождите несколько раундов."
+	}
+	
+	"CR_MENU_Rounds"
+	{
+		"en"		"Custom rounds"
+		"ru"		"Нестандартные раунды"
+	}
+	
+	"CR_MENU_Disable_Current"		
+	{
+		"en"		"Disable current"
+		"ru"		"Выключить текущий"
+	}
+	
+	"CR_MENU_Cancel_Next"
+	{
+		"en"		"Cancel next"
+		"ru"		"Отменить следующий"
+	}
+	
+	"CR_MENU_Ask"
+	{
+		"en"		"Starting a round:"
+		"ru"		"Запуск раунда:"
+	}
+	
+	"CR_MENU_Choose_Round"
+	{
+		"en"		"Choose round"
+		"ru"		"Выбрать раунд"
+	}
+}
