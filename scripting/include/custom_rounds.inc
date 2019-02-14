@@ -5,95 +5,106 @@
 
 #define	MAX_ROUND_NAME_LENGTH	128	
 
-enum HOOK_TYPE
-{
-	HOOK_PRE = 0,
-	HOOK_NORMAL,
-	HOOK_POST
-}
-
 /**
- *	Вызывается когда был загржуен ключ KeyValues. 
+ *	Called once round loaded from config. 
  *
- *	@param sName			Название раунда.
+ *	@param sName			Round name.
  *	@noreturn
 */
 forward void CR_OnConfigSectionLoad(const char[] sName);
 
 /**
- *	Вызывается когда конфиг начинает загружаться. 
+ *	Called once config started loading. 
  *
  *	@noreturn
 */
 forward void CR_OnConfigLoad();
 
 /**
- *	Вызывается когда нестандартный раунд начался. 
+ *	Plugin fully loaded. 
  *
- *	@param sName			Название раунда.
  *	@noreturn
 */
-forward void CR_OnStartRound(const char[] sName, HOOK_TYPE Type);
+forward void CR_OnPluginStart();
 
 /**
- *	Вызывается когда нестандартный раунд закончился. 
+ *	Called every time when round starts. 
+ *
+ *	@param sName			Name of the round, or `` if round default.
+ *	@param Kv				KeyValue with round section.
+ *	@noreturn
+*/
+forward void CR_OnRoundStart(const char[] sName, KeyValues Kv);
+
+/**
+ *	Called once custom round ended.
  *	
- *	@param sName			Название раунда.
- *	@param iClient			Индекс игрока, который завершил раунд.
+ *	@param sName			Name of the ended round, or `` if round default.
+ *	@param Kv				KeyValue with round section.
+ *	@param iClient			Client index who canceled next round, or 0 if server.
  *	@noreturn
 */
-forward void CR_OnRoundEnd(const char[] sName, int iClient);
+forward void CR_OnRoundEnd(const char[] sName, KeyValues Kv, int iClient);
 
 /**
- *	Вызывается когда следующий раунд был отменен. 
+ *	Called once client or server try to cancel current custom round.
  *
- *	@param iClient			Индекс игрока, который отменил раунд.
- *	@noreturn
-*/
-forward void CR_OnCancelNextRound(int iClient);
-
-/**
- *	Вызывается когда был установлен следующий раунд. 
+ *	@param iClient			Client index who try to cancel current round, or 0 if server.
  *
- *	@param sName			Название следующего раунда.
- *	@param iClient			Индекс игрока, который установил раунд.
- *	@noreturn
+ *	@return					true for allow, false otherwise.
 */
-forward void CR_OnSetNextRound(const char[] sName, int iClient);
+forward bool CR_OnCancelCurrentRound(int iClient);
 
 /**
- *	Вызывается когда был установлен и запущен раунд. 
+ *	Called once client or server try to cancel next custom round.
  *
- *	@param sName			Название следующего раунда.
- *	@param iClient			Индекс игрока.
- *	@noreturn
-*/
-forward void CR_OnStartCurrentRound(const char[] sName, int iClient);
-
-/**
- *	Вызывается когда игрок возродился в нестандартном раунде. 
+ *	@param iClient			Client index who try to cancel next round, or 0 if server.
  *
- *	@param iClient			Индекс игрока.
- *	@noreturn
+ *	@return					true for allow, false otherwise.
 */
-forward void CR_OnPlayerSpawn(int iClient, HOOK_TYPE Type);
+forward bool CR_OnCancelNextRound(int iClient);
 
 /**
- *	Вызывается когда игрок написал !cr/sm_cr. 
+ *	Called once client or server sets next round.
  *
- *	@noreturn
+ *	@param sName			Name of the next round.
+ *	@param iClient			Client index who set next round, or 0 if server.
+ *
+ *	@return					Plugin_Continue 	-	allow; 
+ 							Plugin_Changed		-	allow with changes (sName);
+							Plugin_Changed/Stop -	dissalow.
 */
-forward void CR_OnChatCommand(int iClient);
+forward Action CR_OnSetNextRound(char[] sName, int iClient);
 
 /**
- *	Перезагружает конфиг Custom Rounds. 
+ *	Called once client or server try to force start custom round.
+ *
+ *	@param sName			Name of the next round.
+ *	@param iClient			Client index who set next round, or 0 if server.
+ *
+ *	@return					Plugin_Continue 	-	allow; 
+ 							Plugin_Changed		-	allow with changes (sName);
+							Plugin_Changed/Stop -	dissalow.
+*/
+forward Action CR_OnForceRoundStart(char[] sName, int iClient);
+
+/**
+ *	Called once player spawned.
+ *
+ *	@param iClient			Client index.
+ *	@noreturn
+*/
+forward void CR_OnPlayerSpawn(int iClient);
+
+/**
+ *	Reloads Custom Rounds config.
  *
  *	@noreturn
 */
 native void CR_ReloadConfig();
 
 /**
- *	Возвращает KeyValues плагина. 
+ *	Returns KeyValues with custom rounds settings. 
  *
  *	@return                 KeyValues Custom Rounds.
 */
@@ -118,23 +129,30 @@ native bool CR_GetCurrentRoundName(char[] sName, int iMaxLenght);
 native bool CR_GetNextRoundName(char[] sName, int iMaxLenght);
 
 /**
- *	Проверяет на конец раунда. 
+ *	Check is round end or not. (Time between `round_end` and `round_start`)
  *
- *	@return                 true в случае если конец раунда, иначе false.
+ *	@return                 true if round end, false otherwise.
 */
 native bool CR_IsRoundEnd();
 
 /**
- *	Возвращает тип следующего раунда. 
+ *	Checks if round exists.
  *
- *	@return                 true в случае если раунд нестандартный, иначе false.
+ *	@return                 true if exists, false otherwise.
+*/
+native bool CR_IsRoundExists(const char[] sRound);
+
+/**
+ *	Checks if next round custom.
+ *
+ *	@return                 true if next round custom, false otherwise.
 */
 native bool CR_IsNextRoundCustom();
 
 /**
- *	Возвращает тип раунда. 
+ *	Checks if current round custom.
  *
- *	@return                 true в случае если раунд нестандартный, иначе false.
+ *	@return                 true if custom, false otherwise.
 */
 native bool CR_IsCustomRound();
 
@@ -143,39 +161,47 @@ native bool CR_IsCustomRound();
  *
  *	@param sName			Название раунда.
  *	@param iClient			Индекс игрока.
- *	@param bCheckInterval	Если true, то проверяет интервал (квар sm_cr_round_interval).
- *	@return                 false, если интервал между раундами не пройден;
+ *
  *  @error                  Раунд не найден.
- *	@noreturn
+ *
+ *	@return					true, если раунд запустился,  иначе false.
 */
-native bool CR_StartRound(const char[] sName, int iClient = 0, bool bCheckInterval = false);
+native bool CR_StartRound(const char[] sName, int iClient = 0);
 
 /**
  *  Устанавливет следующий раунд.
  *
  *  @param sName	        Название раунда.
  *  @param iClient          Индекс игрока.
- *	@param bCheckInterval	Если true, то проверяет интервал (квар sm_cr_round_interval).
- *	@return                 false, если интервал между раундами не пройден;
+ *
  *  @error                  Раунд не найден.
+ *
+ *	@return                 true, если раунд установился, иначе false.
  */
-native bool CR_SetNextRound(const char[] sName, int iClient = 0, bool bCheckInterval = false);
+native bool CR_SetNextRound(const char[] sName, int iClient = 0);
 
 /**
- *  Останавливает раунд.
- *
- *  @param iClient          Индекс игрока.
- *	@return                 false, если текущий раунд обычный, иначе true;
+ *  Cancels current round.
+ *	
+ *  @param iClient          Client index who canceled the round, or 0 for server.
+ *	@return                 true if current round canceled, false if current round default, or blocked by forward.
  */
 native bool CR_StopRound(int iClient = 0);
 
 /**
- *  Отменяет следующий раунд.
+ *  Cancels next round.
  *	
- *  @param iClient          Индекс игрока.
- *	@return                 false, если следующего раунда нет, иначе true;
+ *  @param iClient          Client index who canceled the round, or 0 for server.
+ *	@return                 true if next round canceled, false if next round default, or blocked by forward.
  */
 native bool CR_CancelNextRound(int iClient = 0);
+
+/**
+ *  Return array filled by loaded custom rounds.
+ *	
+ *	@retrun					ArrayList with rounds.
+ */
+native ArrayList CR_GetArrayOfRounds();
 
 public SharedPlugin __pl_custom_rounds= 
 {
@@ -198,9 +224,11 @@ public __pl_custom_rounds_SetNTVOptional()
 	MarkNativeAsOptional("CR_IsCustomRound");
 	MarkNativeAsOptional("CR_IsNextRoundCustom");
 	MarkNativeAsOptional("CR_IsRoundEnd");
+	MarkNativeAsOptional("CR_IsRoundExists");
 	MarkNativeAsOptional("CR_GetNextRoundName");
 	MarkNativeAsOptional("CR_GetCurrentRoundName");
 	MarkNativeAsOptional("CR_GetKeyValue");
 	MarkNativeAsOptional("CR_ReloadConfig");
+	MarkNativeAsOptional("CR_GetArray");
 }
 #endif
