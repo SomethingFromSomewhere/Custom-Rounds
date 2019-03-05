@@ -14,6 +14,7 @@ public Plugin myinfo =
 };
 
 #include "custom_rounds/defines.sp"
+#include "custom_rounds/functions.sp"
 #include "custom_rounds/natives.sp"
 #include "custom_rounds/forwards.sp"
 #include "custom_rounds/hooks.sp"
@@ -100,9 +101,9 @@ public int Native_ReloadConfig(Handle hPlugin, int numParams)	{	LoadConfig();	}
 
 public void OnMapStart()
 {
-	g_bIsCR				=
 	g_bRoundEnd 		= 	false;
 	
-	g_sCurrentRound[0] 	=
+	if(KvCurrent)	delete KvCurrent;
+
 	g_sNextRound[0] 	= 	'\0';
 }

@@ -30,11 +30,10 @@ forward void CR_OnPluginStart();
 /**
  *	Called every time when round starts. 
  *
- *	@param sName			Name of the round, or `` if round default.
  *	@param Kv				KeyValue with round section.
  *	@noreturn
 */
-forward void CR_OnRoundStart(const char[] sName, KeyValues Kv);
+forward void CR_OnRoundStart(KeyValues Kv);
 
 /**
  *	Called once custom round ended.
@@ -44,7 +43,7 @@ forward void CR_OnRoundStart(const char[] sName, KeyValues Kv);
  *	@param iClient			Client index who canceled next round, or 0 if server.
  *	@noreturn
 */
-forward void CR_OnRoundEnd(const char[] sName, KeyValues Kv, int iClient);
+forward void CR_OnRoundEnd(KeyValues Kv);
 
 /**
  *	Called once client or server try to cancel current custom round.
@@ -92,9 +91,10 @@ forward Action CR_OnForceRoundStart(char[] sName, int iClient);
  *	Called once player spawned.
  *
  *	@param iClient			Client index.
+ *	@param Kv				KeyValues с настройками раунда.
  *	@noreturn
 */
-forward void CR_OnPlayerSpawn(int iClient);
+forward void CR_OnPlayerSpawn(int iClient, KeyValues Kv);
 
 /**
  *	Reloads Custom Rounds config.
@@ -169,6 +169,17 @@ native bool CR_IsCustomRound();
 native bool CR_StartRound(const char[] sName, int iClient = 0);
 
 /**
+ *	Запускает раунд с указанным KeyValues. 
+ *
+ *	@param Kv				KeyValue с настройками.
+ *
+ *  @error                  Невалидный KeyValue;
+ *
+ *	@return					true, если раунд запустился,  иначе false.
+*/
+native bool CR_StartRoundFromKeyValue(KeyValues Kv);
+
+/**
  *  Устанавливет следующий раунд.
  *
  *  @param sName	        Название раунда.
@@ -221,6 +232,7 @@ public __pl_custom_rounds_SetNTVOptional()
 	MarkNativeAsOptional("CR_StopRound");
 	MarkNativeAsOptional("CR_SetNextRound");
 	MarkNativeAsOptional("CR_StartRound");
+	MarkNativeAsOptional("CR_StartRoundFromKeyValue");
 	MarkNativeAsOptional("CR_IsCustomRound");
 	MarkNativeAsOptional("CR_IsNextRoundCustom");
 	MarkNativeAsOptional("CR_IsRoundEnd");

@@ -7,9 +7,9 @@ void CreateForwards()
 	g_hForward_OnSetNextRound 									=		CreateGlobalForward(		"CR_OnSetNextRound",			ET_Event, 		Param_String,		Param_Cell);
 	g_hForward_OnPlayerSpawn 								=		CreateGlobalForward(		"CR_OnPlayerSpawn",				ET_Ignore, 		Param_Cell,		Param_Cell);
 	g_hForward_PluginStarted 							=		CreateGlobalForward(		"CR_PluginStarted",				ET_Ignore);
-	g_hForward_OnRoundStart 						=		CreateGlobalForward(		"CR_OnRoundStart", 				ET_Ignore, 		Param_String,		Param_Cell);
+	g_hForward_OnRoundStart 						=		CreateGlobalForward(		"CR_OnRoundStart", 				ET_Ignore, 		Param_Cell);
 	g_hForward_OnConfigLoad 					=		CreateGlobalForward(		"CR_OnConfigLoad", 				ET_Ignore);
-	g_hForward_OnRoundEnd 					=		CreateGlobalForward(		"CR_OnRoundEnd",				ET_Ignore, 		Param_String,		Param_Cell);
+	g_hForward_OnRoundEnd 					=		CreateGlobalForward(		"CR_OnRoundEnd",				ET_Ignore, 		Param_Cell);
 }
 
 bool Forward_OnForceStartRound(char sName[MAX_ROUND_NAME_LENGTH], int iClient)
@@ -92,7 +92,7 @@ void Forward_OnPlayerSpawn(int iClient)
 	Call_StartForward(g_hForward_OnPlayerSpawn);
 	
 	Call_PushCell(iClient);
-	Call_PushCell(view_as<bool>(g_sCurrentRound[0]));
+	Call_PushCell(KvCurrent);
 	
 	Call_Finish();
 }
@@ -104,12 +104,11 @@ void Forward_PluginStarted()
 	Call_Finish();
 }
 
-void Forward_OnRoundStart(const char[] sName)
+void Forward_OnRoundStart()
 {
 	Call_StartForward(g_hForward_OnRoundStart);
 	
-	Call_PushString(sName);
-	Call_PushCell(Kv);
+	Call_PushCell(KvCurrent);
 	
 	Call_Finish();
 }
@@ -121,13 +120,11 @@ void Forward_OnConfigLoad()
 	Call_Finish();
 }
 
-void Forward_OnRoundEnd(int iClient = 0)
+void Forward_OnRoundEnd()
 {
 	Call_StartForward(g_hForward_OnRoundEnd);
 	
-	Call_PushString(g_sCurrentRound);
-	Call_PushCell(Kv);
-	Call_PushCell(iClient);
+	Call_PushCell(KvCurrent);
 	
 	Call_Finish();
 }

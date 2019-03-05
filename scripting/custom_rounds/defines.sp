@@ -1,14 +1,14 @@
-KeyValues Kv;
+KeyValues Kv, KvCurrent;
 ArrayList g_hArray;
 
 
-bool		g_bRoundEnd,	g_bIsCR;
+bool		g_bRoundEnd;
 
 
 float 		g_fRespawn,		g_fRestartDelay;
 
 
-char 		g_sNextRound[MAX_ROUND_NAME_LENGTH], 				g_sCurrentRound[MAX_ROUND_NAME_LENGTH];
+char 		g_sNextRound[MAX_ROUND_NAME_LENGTH];
 
 
 Handle 		g_hForward_OnSetNextRound, 			g_hForward_OnForceStartRound,		g_hForward_OnRoundEnd, 			

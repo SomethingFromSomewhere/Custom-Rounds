@@ -4,6 +4,7 @@ void CreateNatives()
 	CreateNative("CR_SetNextRound", Native_SetNextRound);
 	CreateNative("CR_StopRound", Native_StopRound);
 	CreateNative("CR_StartRound", Native_StartRound);
+	CreateNative("CR_StartRoundFromKeyValue", Native_StartRoundFromKeyValue);
 	
 	CreateNative("CR_IsCustomRound", Native_IsCustomRound);
 	CreateNative("CR_IsNextRoundCustom",  Native_IsNextRoundCustom);
@@ -48,14 +49,9 @@ public int Native_SetNextRound(Handle hPlugin, int numParams)
 
 public int Native_StopRound(Handle hPlugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
-	if(!g_sCurrentRound[0] && !Forward_OnCancelCurrentRound(iClient))	return false;
-	
-	Forward_OnRoundEnd(iClient);	
-	
-	g_sCurrentRound[0] = '\0';	
-	
-	CS_TerminateRound(g_fRestartDelay, CSRoundEnd_GameStart, false);	// CSRoundEnd_Draw
+	if(!KvCurrent && !Forward_OnCancelCurrentRound(GetNativeCell(1)))	return false;
+
+	CS_TerminateRound(g_fRestartDelay, CSRoundEnd_Draw, false);	// CSRoundEnd_Draw
 	
 	return true;
 }
@@ -70,8 +66,8 @@ public int Native_StartRound(Handle hPlugin, int numParams)
 	{
 		if(Forward_OnForceStartRound(sBuffer, GetNativeCell(2)) && g_hArray.FindString(sBuffer) != -1)
 		{
-			g_sCurrentRound = sBuffer;
-			CS_TerminateRound(0.0, CSRoundEnd_GameStart, false); // CSRoundEnd_Draw
+			Function_CreateRoundKeyValue(sBuffer);
+			CS_TerminateRound(0.0, CSRoundEnd_Draw, false); // CSRoundEnd_Draw
 			return true;
 		}
 	}
@@ -80,14 +76,26 @@ public int Native_StartRound(Handle hPlugin, int numParams)
 	return false;
 }
 
+public int  Native_StartRoundFromKeyValue(Handle hPlugin, int numParams)
+{
+	KeyValues KvTemp = GetNativeCell(1);
+	if(Kv != null)
+	{
+		Function_CreateRoundKeyValue(_, KvTemp);
+		return true;
+	}
+	ThrowNativeError(SP_ERROR_NATIVE, "[StartRoundFromKeyValue] Invalid KeyValue.");
+	return false;
+}
+
 public int Native_IsCustomRound(Handle hPlugin, int numParams)
 {
-	return g_bIsCR;
+	return KvCurrent != null;
 }
 
 public int Native_IsNextRoundCustom(Handle hPlugin, int numParams)
 {
-	return g_sNextRound[0] != 0;
+	return g_sNextRound[0];
 }
 
 public int Native_IsRoundEnd(Handle hPlugin, int numParams)
@@ -111,8 +119,13 @@ public int Native_GetNextRoundName(Handle hPlugin, int numParams)
 
 public int Native_GetCurrentRoundName(Handle hPlugin, int numParams)
 {
-	if(!g_sCurrentRound[0])	return false;
-	SetNativeString(1, g_sCurrentRound, GetNativeCell(2), true);
+	if(!KvCurrent)	return false;
+	KvCurrent.Rewind();
+
+	char sBuffer[MAX_ROUND_NAME_LENGTH];
+	KvCurrent.GetSectionName(sBuffer, sizeof(sBuffer));
+	SetNativeString(1, sBuffer, GetNativeCell(2), true);
+
 	return true;
 }
 
