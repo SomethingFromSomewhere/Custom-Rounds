@@ -6,12 +6,20 @@
 #define	MAX_ROUND_NAME_LENGTH	128	
 
 /**
+ *	Called once round begin loading from config. 
+ *
+ *	@param sName			Round name.
+ *	@return					true to allow, false otherwise.
+*/
+forward bool CR_OnConfigSectionLoad(const char[] sName);
+
+/**
  *	Called once round loaded from config. 
  *
  *	@param sName			Round name.
  *	@noreturn
 */
-forward void CR_OnConfigSectionLoad(const char[] sName);
+forward void CR_OnConfigSectionLoadPost(const char[] sName);
 
 /**
  *	Called once config started loading. 
