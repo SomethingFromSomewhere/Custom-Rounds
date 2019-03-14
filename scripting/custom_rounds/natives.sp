@@ -1,24 +1,23 @@
 void CreateNatives()
 {
-	CreateNative("CR_CancelNextRound", Native_CancelNextRound);
-	CreateNative("CR_SetNextRound", Native_SetNextRound);
-	CreateNative("CR_StopRound", Native_StopRound);
-	CreateNative("CR_StartRound", Native_StartRound);
-	CreateNative("CR_StartRoundFromKeyValue", Native_StartRoundFromKeyValue);
+	CreateNative("CR_CancelNextRound", 			Native_CancelNextRound			);
+	CreateNative("CR_SetNextRound", 			Native_SetNextRound				);
+	CreateNative("CR_StopRound", 				Native_StopRound				);
+	CreateNative("CR_StartRound", 				Native_StartRound				);
+	CreateNative("CR_StartRoundFromKeyValue", 	Native_StartRoundFromKeyValue	);
 	
-	CreateNative("CR_IsCustomRound", Native_IsCustomRound);
-	CreateNative("CR_IsNextRoundCustom",  Native_IsNextRoundCustom);
-	CreateNative("CR_IsRoundEnd", Native_IsRoundEnd);
-	CreateNative("CR_IsRoundExists", Native_IsRoundExists);
+	CreateNative("CR_IsCustomRound", 			Native_IsCustomRound			);
+	CreateNative("CR_IsNextRoundCustom",		Native_IsNextRoundCustom		);
+	CreateNative("CR_IsRoundEnd",				Native_IsRoundEnd				);
+	CreateNative("CR_IsRoundExists",			Native_IsRoundExists			);
 	
-	CreateNative("CR_GetNextRoundName",  Native_GetNextRoundName);
-	CreateNative("CR_GetCurrentRoundName",  Native_GetCurrentRoundName);
+	CreateNative("CR_GetNextRoundName",			Native_GetNextRoundName			);
+	CreateNative("CR_GetCurrentRoundName",		Native_GetCurrentRoundName		);
 	
-	CreateNative("CR_GetKeyValue",  Native_GetKeyValue);
-	CreateNative("CR_ReloadConfig",  Native_ReloadConfig);
-	CreateNative("CR_GetArrayOfRounds",  Native_GetArrayOfRounds);
+	CreateNative("CR_GetKeyValue",				Native_GetKeyValue				);
+	CreateNative("CR_ReloadConfig",				Native_ReloadConfig				);
+	CreateNative("CR_GetArrayOfRounds",			Native_GetArrayOfRounds			);
 }
-
 
 public int Native_CancelNextRound(Handle hPlugin, int numParams)
 {
@@ -66,8 +65,8 @@ public int Native_StartRound(Handle hPlugin, int numParams)
 	{
 		if(Forward_OnForceStartRound(sBuffer, GetNativeCell(2)) && g_hArray.FindString(sBuffer) != -1)
 		{
+			CS_TerminateRound(0.0, CSRoundEnd_Draw, false);
 			Function_CreateRoundKeyValue(sBuffer);
-			CS_TerminateRound(0.0, CSRoundEnd_Draw, false); // CSRoundEnd_Draw
 			return true;
 		}
 	}
@@ -132,6 +131,11 @@ public int Native_GetCurrentRoundName(Handle hPlugin, int numParams)
 public int Native_GetKeyValue(Handle hPlugin, int numParams)
 {
 	return view_as<int>(Kv);
+}
+
+public int Native_ReloadConfig(Handle hPlugin, int numParams)	
+{	
+	Function_LoadConfig();	
 }
 
 public int Native_GetArrayOfRounds(Handle hPlugin, int numParams)

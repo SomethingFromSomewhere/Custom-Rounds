@@ -37,7 +37,7 @@ public void OnPluginStart()
 	CVAR.AddChangeHook(ChangeCvar_RoundRestartDelay);
 	g_fRestartDelay = CVAR.FloatValue;
 
-	(CVAR = CreateConVar("sm_cr_respawn_type", "1", "Give equipments and etc. Any values sets timer after respawn. 0 - instantly.", _, true, 0.0)).AddChangeHook(ChangeCvar_Respawn);
+	(CVAR = CreateConVar("sm_cr_respawn_type", "1", "Time before spawn hook calls after player respawn. Any values sets timer after respawn. 0 - instantly.", _, true, 0.0)).AddChangeHook(ChangeCvar_Respawn);
 	g_fRespawn = CVAR.FloatValue;
 
 	AutoExecConfig(true, "custom_rounds");
@@ -51,7 +51,7 @@ public void OnPluginStart()
 
 public void OnAllPluginsLoaded()
 {
-	LoadConfig();
+	Function_LoadConfig();
 	Forward_PluginStarted();
 }
 
@@ -67,43 +67,7 @@ public void ChangeCvar_Respawn(ConVar convar, const char[] oldValue, const char[
 
 public Action CMD_RELOAD(int iClient, int iArgs)
 {
-	LoadConfig();
+	Function_LoadConfig();
+	ReplyToCommand(iClient, "%tConfig reloaded", "Prefix");
 	return Plugin_Handled;
-}
-
-static void LoadConfig()
-{
-	delete Kv;
-	Kv = new KeyValues("CustomRounds");
-
-	g_hArray.Clear();
-	Forward_OnConfigLoad();
-	
-	char sBuffer[PLATFORM_MAX_PATH];
-	BuildPath(Path_SM, sBuffer, sizeof(sBuffer), "configs/custom_rounds/rounds.ini");
-	if (!FileToKeyValues(Kv, sBuffer)) SetFailState("Файл конфигурации не найден %s", sBuffer);
-
-	if (Kv.GotoFirstSubKey())
-	{ 
-		do
-		{
-			if(Kv.GetSectionName(sBuffer, sizeof(sBuffer)))
-			{
-				g_hArray.PushString(sBuffer);
-				Forward_OnConfigSectionLoad(sBuffer);
-			}
-		}
-		while (Kv.GotoNextKey());
-	}
-}
-
-public int Native_ReloadConfig(Handle hPlugin, int numParams)	{	LoadConfig();	}
-
-public void OnMapStart()
-{
-	g_bRoundEnd 		= 	false;
-	
-	if(KvCurrent)	delete KvCurrent;
-
-	g_sNextRound[0] 	= 	'\0';
 }
