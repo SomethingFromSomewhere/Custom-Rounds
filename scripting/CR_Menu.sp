@@ -37,14 +37,12 @@ public Action CMD_ACR(int iClient, int iArgs)
 	return Plugin_Handled;
 }
 
-
-
 public void CR_OnConfigLoad()
 {
 	g_hMenu.RemoveAllItems();
 }
 
-public void CR_OnConfigSectionLoad(const char[] sName)
+public void CR_OnConfigSectionLoadPost(const char[] sName)
 {
 	g_hMenu.AddItem(sName, sName);
 }

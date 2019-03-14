@@ -75,8 +75,7 @@ public void CR_OnRoundStart(KeyValues Kv)
 	if(Kv)
 	{
 		char sWeapon[32];
-		
-		Kv.SavePosition();
+
 		if (Kv.JumpToKey("Weapons") && Kv.GotoFirstSubKey(false))
 		{
 			do
@@ -84,14 +83,15 @@ public void CR_OnRoundStart(KeyValues Kv)
 				if(Kv.GetSectionName(sWeapon, sizeof(sWeapon)))
 				{
 					g_hWeapons.PushString(sWeapon);
-					Kv.GetString(sWeapon, sWeapon, sizeof(sWeapon));
+					Kv.GetString(NULL_STRING, sWeapon, sizeof(sWeapon));
 					if(sWeapon[0])	g_hWeapons.PushString(sWeapon);
 				}
 			}
 			while (Kv.GotoNextKey(false));
 			g_bUse = true;
+			Kv.GoBack();
+			Kv.GoBack();
 		}
-		Kv.GoBack();
 		
 		g_bBlockPick = view_as<bool>(Kv.GetNum("block_pickup", 0));
 		g_bNoKnife = view_as<bool>(Kv.GetNum("no_knife", 0));
@@ -197,7 +197,7 @@ void RemoveKnife(int iClient)
 
 public Action OnWeaponCanUse(int iClient, int weapon) 
 {
-	if(g_bUse && CR_IsCustomRound())
+	if(g_bUse)
 	{
 		char sBuffer[32];
 		GetEdictClassname(weapon, sBuffer, sizeof(sBuffer));

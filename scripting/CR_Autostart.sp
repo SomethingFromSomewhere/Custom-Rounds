@@ -30,7 +30,7 @@ public void CR_OnConfigLoad()
 	LoadConfig();
 }
 
-public void CR_OnConfigSectionLoad(const char[] sName)
+public void CR_OnConfigSectionLoadPost(const char[] sName)
 {
 	g_hArray.PushString(sName);
 }
