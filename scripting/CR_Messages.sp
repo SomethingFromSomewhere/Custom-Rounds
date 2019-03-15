@@ -13,6 +13,11 @@ public Plugin myinfo =
 	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa",
 };
 
+public void OnPluginStart()
+{
+	LoadTranslations("custom_rounds.phrases");
+}
+
 public void CR_OnRoundStart(KeyValues Kv)
 {
 	if(Kv)

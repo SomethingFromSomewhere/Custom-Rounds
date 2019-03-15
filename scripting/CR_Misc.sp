@@ -18,7 +18,7 @@ float g_fGravity, g_fSpeed;
 public void OnPluginStart()
 {
 	ConVar CVAR;
-	(CVAR = CreateConVar("sm_cr_misc_save_armor", "1", "Сохранение брони.", _, true, 0.0, true, 1.0)).AddChangeHook(ChangeCvar_Save);
+	(CVAR = CreateConVar("sm_cr_misc_save_armor", "1", "Save armor.", _, true, 0.0, true, 1.0)).AddChangeHook(ChangeCvar_Save);
 	g_bSave = CVAR.BoolValue;
 	
 	m_ArmorValue	 = FindSendPropInfo("CCSPlayer", "m_ArmorValue");

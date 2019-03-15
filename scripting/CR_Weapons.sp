@@ -22,7 +22,7 @@ char g_sPrimary[MAXPLAYERS+1][32], g_sSecondary[MAXPLAYERS+1][32];
 public void OnPluginStart()
 {
 	ConVar CVAR;
-	(CVAR = CreateConVar("sm_cr_weapons_save_weapon", "1", "Save weapons before custom round start..", _, true, 0.0, true, 1.0)).AddChangeHook(ChangeCvar_Save);
+	(CVAR = CreateConVar("sm_cr_weapons_save_weapon", "1", "Save weapons before custom round start.", _, true, 0.0, true, 1.0)).AddChangeHook(ChangeCvar_Save);
 	g_bSave = CVAR.BoolValue;
 	
 	(CVAR = CreateConVar("sm_cr_weapons_clear_weapon", "1", "Strip all weapons from players, when custom rounds starts with weapons.", _, true, 0.0, true, 1.0)).AddChangeHook(ChangeCvar_Clear);
