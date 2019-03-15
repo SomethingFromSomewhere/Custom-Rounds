@@ -33,7 +33,7 @@ forward void CR_OnConfigLoad();
  *
  *	@noreturn
 */
-forward void CR_OnConfigLoaded()
+forward void CR_OnConfigLoaded();
 
 /**
  *	Plugin fully loaded. 
@@ -64,19 +64,21 @@ forward void CR_OnRoundEnd(KeyValues Kv);
  *	Called once client or server try to cancel current custom round.
  *
  *	@param iClient			Client index who try to cancel current round, or 0 if server.
+ *	@param sName			Name of the current round.
  *
  *	@return					true for allow, false otherwise.
 */
-forward bool CR_OnCancelCurrentRound(int iClient);
+forward bool CR_OnCancelCurrentRound(int iClient, const char[] sName);
 
 /**
  *	Called once client or server try to cancel next custom round.
  *
  *	@param iClient			Client index who try to cancel next round, or 0 if server.
+ *	@param sName			Name of the next round.
  *
  *	@return					true for allow, false otherwise.
 */
-forward bool CR_OnCancelNextRound(int iClient);
+forward bool CR_OnCancelNextRound(int iClient, const char[] sName);
 
 /**
  *	Called once client or server sets next round.

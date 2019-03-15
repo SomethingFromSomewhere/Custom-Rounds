@@ -33,12 +33,6 @@ public void CR_OnConfigLoad()
 	else LogAction(-1, -1, "Настройки загружены.");	
 }
 
-public bool CR_OnCancelNextRound(int iClient)
-{
-	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" отменил следующий раунд.", iClient);
-	else LogAction(iClient, -1, "\"%L\" отменил следующий раунд.", iClient);
-}
-
 public Action CR_OnSetNextRound(char[] sName, int iClient)
 {
 	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" сделал %s следующим раундом.", iClient, sName);
@@ -51,13 +45,14 @@ public Action CR_OnForceRoundStart(char[] sName, int iClient)
 	else LogAction(iClient, -1, "\"%L\" запустил раунд %s.", iClient, sName);
 }
 
-public void CR_OnRoundEnd(KeyValues Kv)
+public bool CR_OnCancelCurrentRound(int iClient, const char[] sName)
 {
-	char sName[MAX_ROUND_NAME_LENGTH];
-	if(Kv && Kv.GetSectionName(sName, sizeof(sName))
-	{
-		if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" отменил раунд %s.", iClient, sName);
-		else LogAction(iClient, -1, "\"%L\"отменил раунд %s.", iClient, sName);
-	}	
+	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" отменил раунд %s.", iClient, sName);
+	else LogAction(iClient, -1, "\"%L\"отменил раунд %s.", iClient, sName);
 }
 
+public bool CR_OnCancelNextRound(int iClient, const char[] sName)
+{
+	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" отменил следующий раунд %s.", iClient, sName);
+	else LogAction(iClient, -1, "\"%L\"отменил следующий раунд %s.", iClient, sName);
+}

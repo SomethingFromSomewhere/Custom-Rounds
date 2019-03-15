@@ -11,12 +11,14 @@ public Plugin myinfo =
 	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa"
 };
 
+#define Plugin_PrintToChat PrintToChat
+
 int g_iInterval, g_iRounds;
 
 public void OnPluginStart()
 {
 	ConVar CVAR;
-	(CVAR = CreateConVar("sm_cr_round_interval", "5", "Интервал между нестандартными раундами. 0 - отключено", _, true, 0.0)).AddChangeHook(ChangeCvar_Interval);
+	(CVAR = CreateConVar("sm_cr_round_interval", "5", "Interval beetwen rounds. 0 - disabled", _, true, 0.0)).AddChangeHook(ChangeCvar_Interval);
 	g_iInterval = CVAR.IntValue;
 }
 
@@ -36,7 +38,12 @@ public Action CR_OnSetNextRound(char[] sName, int iClient)
 {
 	if(g_iRounds-1 > 0)
 	{
-		ReplyToCommand(iClient, "%t %t", "Prefix", "Intervals_Warning");
+		if(iClient)
+		{
+			Plugin_PrintToChat(iClient, "%t%t", "Prefix", "Intervals_Warning");
+		}
+		else PrintToServer("%t%t", "Prefix", "Intervals_Warning");
+
 		return Plugin_Handled;
 	}
 	
@@ -47,7 +54,12 @@ public Action CR_OnForceRoundStart(char[] sName, int iClient)
 {
 	if(g_iRounds != 0)
 	{
-		ReplyToCommand(iClient, "%t %t", "Prefix", "Intervals_Warning");
+		if(iClient)
+		{
+			Plugin_PrintToChat(iClient, "%t%t", "Prefix", "Intervals_Warning");
+		}
+		else PrintToServer("%t%t", "Prefix", "Intervals_Warning");
+
 		return Plugin_Handled;
 	}
 	
