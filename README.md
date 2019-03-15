@@ -174,7 +174,7 @@ Provide keys for custom chat triggers for launch rounds.
 
 ## [Doors](https://github.com/SomethingFromSomewhere/Custom-Rounds/blob/master/scripting/CR_Doors.sp)
 
-Provide key for open doors via ####### [Smart Jail Doors](https://github.com/Kailo97/smartjaildoors) .
+Provide key for open doors via [Smart Jail Doors](https://github.com/Kailo97/smartjaildoors) .
 
 ```
 	"open_doors"		"1"				-	Open all specified doors.
