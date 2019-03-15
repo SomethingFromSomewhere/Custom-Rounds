@@ -24,7 +24,7 @@ public void OnPluginStart()
 	g_hArray = new ArrayList(ByteCountToCells(MAX_ROUND_NAME_LENGTH));
 }
 
-public void CR_OnConfigLoad()
+public void CR_OnConfigLoaded()
 {
 	g_hArray.Clear();
 	LoadConfig();
@@ -35,7 +35,7 @@ public void CR_OnConfigSectionLoadPost(const char[] sName)
 	g_hArray.PushString(sName);
 }
 
-public void CR_OnStartRound(KeyValues Kv)
+public void CR_OnRoundStart(KeyValues Kv)
 {
 	g_iRounds++;
 	if(Kv)

@@ -13,10 +13,9 @@ public void Event_Callback(Event hEvent, 	const char[] sName, 	bool bDonBroadcas
 		{
 			g_bRoundEnd = false;
 
-			if(!KvCurrent && g_sNextRound[0])
+			if(!KvCurrent && KvNext)
 			{
-				Function_CreateRoundKeyValue(g_sNextRound);
-				g_sNextRound[0] = '\0';
+				KvCurrent = KvNext;
 			}
 			Forward_OnRoundStart();
 		}
@@ -47,5 +46,5 @@ public void OnMapStart()
 	
 	g_bRoundEnd 		= 	false;
 	delete KvCurrent;
-	g_sNextRound[0] 	= 	'\0';
+	delete KvNext;
 }

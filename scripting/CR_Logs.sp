@@ -33,25 +33,25 @@ public void CR_OnConfigLoad()
 	else LogAction(-1, -1, "Настройки загружены.");	
 }
 
-public Action CR_OnSetNextRound(char[] sName, int iClient)
+public void CR_OnSetNextRoundPost(int iClient, const char[] sName)
 {
 	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" сделал %s следующим раундом.", iClient, sName);
 	else LogAction(iClient, -1, "\"%L\" сделал %s следующим раундом.", iClient, sName);
 }
 
-public Action CR_OnForceRoundStart(char[] sName, int iClient)
+public void CR_OnForceStartRoundPost(int iClient, const char[] sName)
 {
 	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" запустил раунд %s.", iClient, sName);
 	else LogAction(iClient, -1, "\"%L\" запустил раунд %s.", iClient, sName);
 }
 
-public bool CR_OnCancelCurrentRound(int iClient, const char[] sName)
+public void CR_OnCancelCurrentRoundPost(int iClient, const char[] sName)
 {
 	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" отменил раунд %s.", iClient, sName);
 	else LogAction(iClient, -1, "\"%L\"отменил раунд %s.", iClient, sName);
 }
 
-public bool CR_OnCancelNextRound(int iClient, const char[] sName)
+public void CR_OnCancelNextRoundPost(int iClient, const char[] sName)
 {
 	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" отменил следующий раунд %s.", iClient, sName);
 	else LogAction(iClient, -1, "\"%L\"отменил следующий раунд %s.", iClient, sName);

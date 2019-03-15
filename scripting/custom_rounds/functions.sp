@@ -1,4 +1,4 @@
-void Function_CreateRoundKeyValue(const char[] sName = "", KeyValues KvTemp = null)
+void Function_CreateRoundKeyValue(const char[] sName = "", bool bType, KeyValues KvTemp = null)
 {
 	delete KvCurrent;
 	if(!KvTemp)
@@ -6,15 +6,23 @@ void Function_CreateRoundKeyValue(const char[] sName = "", KeyValues KvTemp = nu
 		Kv.Rewind();	
 		if(Kv.JumpToKey(sName))
 		{
-			KvCurrent = new KeyValues(sName);
-			KvCopySubkeys(Kv, KvCurrent);
+			if(bType)
+			{
+				KvCurrent = new KeyValues(sName);
+				KvCopySubkeys(Kv, KvCurrent);
+			}
+			else
+			{
+				KvNext = new KeyValues(sName);
+				KvCopySubkeys(Kv, KvNext);
+			}
 		}
 	}
 	else
 	{
 		KvTemp.Rewind();
-		KvCurrent = KvTemp;
-		//KvCopySubkeys(KvTemp, KvCurrent);
+		if(bType)	KvCurrent = KvTemp;
+		else 		KvNext = KvTemp;
 	}
 }
 
@@ -62,4 +70,21 @@ void Function_LoadConfig()
 	}
 
 	Forward_OnConfigLoaded();
+}
+
+bool Function_CheckMainKeyValue()
+{
+	if(!Kv)
+	{
+		Function_LoadConfig();
+		LogMessage("[CR][WARNING] Main config not loaded. Attempting to load main config file...");
+		if(!Kv)	LogError("[CR][ERROR] Main config not loaded!");
+	}
+	return true;
+}
+
+void Function_GetRoundNameFromKeyValue(KeyValues KvTarget, char[] sBuffer)
+{
+	Kv.Rewind();
+	KvTarget.GetSectionName(sBuffer, MAX_ROUND_NAME_LENGTH);
 }

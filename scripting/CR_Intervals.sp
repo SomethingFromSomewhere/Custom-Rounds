@@ -34,7 +34,7 @@ public void CR_OnRoundStart(KeyValues Kv)
 	else if(g_iRounds > 0)							--g_iRounds;
 }
 
-public Action CR_OnSetNextRound(char[] sName, int iClient)
+public Action CR_OnSetNextRound(int iClient, char[] sName)
 {
 	if(g_iRounds-1 > 0)
 	{
@@ -50,7 +50,7 @@ public Action CR_OnSetNextRound(char[] sName, int iClient)
 	return Plugin_Continue;
 }
 
-public Action CR_OnForceRoundStart(char[] sName, int iClient)
+public Action CR_OnForceRoundStart(int iClient, char[] sName)
 {
 	if(g_iRounds != 0)
 	{

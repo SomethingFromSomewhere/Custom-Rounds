@@ -32,6 +32,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 public void OnPluginStart()
 {
 	ConVar CVAR;
+
 	CVAR = FindConVar("mp_round_restart_delay");
 	if(!CVAR)	(CVAR = CreateConVar("sm_cr_restart_delay", "5.0", "Time until round restart. 0 - instantly.", _, true, 0.0));
 	CVAR.AddChangeHook(ChangeCvar_RoundRestartDelay);
@@ -43,9 +44,9 @@ public void OnPluginStart()
 	AutoExecConfig(true, "custom_rounds");
 
 	RegAdminCmd("sm_cr_reload", CMD_RELOAD, ADMFLAG_ROOT);
-	
+
 	g_hArray = new ArrayList(ByteCountToCells(MAX_ROUND_NAME_LENGTH));
-	
+
 	HookEvents();
 }
 
@@ -68,6 +69,6 @@ public void ChangeCvar_Respawn(ConVar convar, const char[] oldValue, const char[
 public Action CMD_RELOAD(int iClient, int iArgs)
 {
 	Function_LoadConfig();
-	ReplyToCommand(iClient, "%tConfig reloaded", "Prefix");
+	ReplyToCommand(iClient, "%tConfig successfully reloaded.", "Prefix");
 	return Plugin_Handled;
 }
