@@ -120,6 +120,13 @@ Provdies key for no zoom.
 	"no_zoom"			"1"		-	Set no zoom for rifles.
 ```
 
+## [Only Headshot](https://github.com/theelsaud/CR-Only-HeadShot)
+
+Provdies key for only headshot.
+
+```
+	"only_head"			"1"		-	Enables only headshot.
+```
 
 ## [Ammo](https://github.com/SomethingFromSomewhere/Custom-Rounds/blob/master/scripting/CR_Ammo.sp)
 
