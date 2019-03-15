@@ -17,4 +17,4 @@ Handle 		g_hForward_OnSetNextRound, 			g_hForward_OnForceStartRound,		g_hForward
 			
 			g_hForward_OnCancelNextRound, 		g_hForward_OnPlayerSpawn, 			g_hForward_OnConfigSectionLoadPost,
 			
-			g_hForward_OnCancelCurrentRound,	g_hForward_PluginStarted;
+			g_hForward_OnCancelCurrentRound,	g_hForward_PluginStarted,			g_hForward_OnConfigLoaded;

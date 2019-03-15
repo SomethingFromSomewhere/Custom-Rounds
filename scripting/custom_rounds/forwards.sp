@@ -10,6 +10,7 @@ void CreateForwards()
 	g_hForward_PluginStarted 				=		CreateGlobalForward(		"CR_PluginStarted",				ET_Ignore);
 	g_hForward_OnRoundStart 				=		CreateGlobalForward(		"CR_OnRoundStart", 				ET_Ignore, 		Param_Cell);
 	g_hForward_OnConfigLoad 				=		CreateGlobalForward(		"CR_OnConfigLoad", 				ET_Ignore);
+	g_hForward_OnConfigLoaded 				=		CreateGlobalForward(		"CR_OnConfigLoaded", 			ET_Ignore);
 	g_hForward_OnRoundEnd 					=		CreateGlobalForward(		"CR_OnRoundEnd",				ET_Ignore, 		Param_Cell);
 }
 
@@ -131,6 +132,14 @@ void Forward_OnConfigLoad()
 	
 	Call_Finish();
 }
+
+void Forward_OnConfigLoaded()
+{
+	Call_StartForward(g_hForward_OnConfigLoaded);
+	
+	Call_Finish();
+}
+
 
 void Forward_OnRoundEnd()
 {

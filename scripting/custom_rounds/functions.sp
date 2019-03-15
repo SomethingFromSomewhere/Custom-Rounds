@@ -60,4 +60,6 @@ void Function_LoadConfig()
 		}
 		while (Kv.GotoNextKey());
 	}
+
+	Forward_OnConfigLoaded();
 }

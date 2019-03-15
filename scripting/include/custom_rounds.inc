@@ -29,6 +29,13 @@ forward void CR_OnConfigSectionLoadPost(const char[] sName);
 forward void CR_OnConfigLoad();
 
 /**
+ *	Called once config fully loaded. 
+ *
+ *	@noreturn
+*/
+forward void CR_OnConfigLoaded()
+
+/**
  *	Plugin fully loaded. 
  *
  *	@noreturn
