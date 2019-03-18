@@ -124,4 +124,12 @@
 		"en"		"Choose round"
 		"ru"		"Выбрать раунд"
 	}
+	
+	"CR_Intervals_Warning"
+	{
+		"#format"	"{1:i}"
+		"en"		"Wait for {1} rounds before launch custom round."
+		"ru"		"Подождите еще {1} раунд(-а/-ов) перед запуском нестандартного раунда."
+	}
+	
 }
