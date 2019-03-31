@@ -18,8 +18,8 @@ Handle		g_hForward_OnPluginStart,				//	void 	CR_OnPluginStart()
 			g_hForward_OnConfigSectionLoadPost,		//	void	CR_OnConfigSectionLoadPost(const char[] sName)
 			
 			
-			g_hForward_OnForceStartRound,			//	Action 	CR_OnForceRoundStart(int iClient, char[] sName)
-			g_hForward_OnForceStartRoundPost,		//	void 	CR_OnForceRoundStartPost(int iClient, const char[] sName)
+			g_hForward_OnForceRoundStart,			//	Action 	CR_OnForceRoundStart(int iClient, char[] sName)
+			g_hForward_OnForceRoundStartPost,		//	void 	CR_OnForceRoundStartPost(int iClient, const char[] sName)
 			
 			
 			g_hForward_OnSetNextRound,				//	Action 	CR_OnSetNextRound(int iClient, char[] sName)

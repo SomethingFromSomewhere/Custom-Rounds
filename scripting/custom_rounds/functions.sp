@@ -1,6 +1,5 @@
 void Function_CreateRoundKeyValue(const char[] sName = "", bool bType, KeyValues KvTemp = null)
 {
-	delete KvCurrent;
 	if(!KvTemp)
 	{
 		Kv.Rewind();	
@@ -8,11 +7,13 @@ void Function_CreateRoundKeyValue(const char[] sName = "", bool bType, KeyValues
 		{
 			if(bType)
 			{
+				delete KvCurrent;
 				KvCurrent = new KeyValues(sName);
 				KvCopySubkeys(Kv, KvCurrent);
 			}
 			else
 			{
+				delete KvNext;
 				KvNext = new KeyValues(sName);
 				KvCopySubkeys(Kv, KvNext);
 			}
@@ -21,8 +22,16 @@ void Function_CreateRoundKeyValue(const char[] sName = "", bool bType, KeyValues
 	else
 	{
 		KvTemp.Rewind();
-		if(bType)	KvCurrent = KvTemp;
-		else 		KvNext = KvTemp;
+		if(bType)	
+		{
+			delete KvCurrent;
+			KvCurrent = KvTemp;
+		}
+		else
+		{
+			delete KvNext;
+			KvNext = KvTemp;
+		}
 	}
 }
 
@@ -78,7 +87,11 @@ bool Function_CheckMainKeyValue()
 	{
 		Function_LoadConfig();
 		LogMessage("[CR][WARNING] Main config not loaded. Attempting to load main config file...");
-		if(!Kv)	LogError("[CR][ERROR] Main config not loaded!");
+		if(!Kv)	
+		{
+			LogError("[CR][ERROR] Main config not loaded!");
+			return false;
+		}
 	}
 	return true;
 }

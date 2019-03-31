@@ -1,7 +1,7 @@
+#include <custom_rounds>
+
 #pragma semicolon 1
 #pragma newdecls required
-
-#include <custom_rounds>
 
 #define Plugin_PrintToChatAll PrintToChatAll
 

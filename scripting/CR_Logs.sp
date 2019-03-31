@@ -16,7 +16,7 @@ char g_sPath[PLATFORM_MAX_PATH];
 public void OnPluginStart()
 {
 	ConVar CVAR;
-	(CVAR = CreateConVar("sm_cr_logs_path", "Custom_Rounds", "Путь до файла логирования. Оставить пустым для стандартного.")).AddChangeHook(ChangeCvar_Path);
+	(CVAR = CreateConVar("sm_cr_logs_path", "Custom_Rounds", "Path and name to logfile.")).AddChangeHook(ChangeCvar_Path);
 	CVAR.GetString(g_sPath, sizeof(g_sPath));
 	if(g_sPath[0])	BuildPath(Path_SM, g_sPath, sizeof(g_sPath), "logs/%s.log", g_sPath);
 }
@@ -39,7 +39,7 @@ public void CR_OnSetNextRoundPost(int iClient, const char[] sName)
 	else LogAction(iClient, -1, "\"%L\" сделал %s следующим раундом.", iClient, sName);
 }
 
-public void CR_OnForceStartRoundPost(int iClient, const char[] sName)
+public void CR_OnForceRoundStartPost(int iClient, const char[] sName)
 {
 	if(g_sPath[0]) LogToFile(g_sPath, "\"%N\" запустил раунд %s.", iClient, sName);
 	else LogAction(iClient, -1, "\"%L\" запустил раунд %s.", iClient, sName);

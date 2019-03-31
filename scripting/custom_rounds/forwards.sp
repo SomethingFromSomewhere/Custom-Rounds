@@ -7,8 +7,8 @@ void CreateForwards()
 	g_hForward_OnConfigSectionLoad 			=		CreateGlobalForward(		"CR_OnConfigSectionLoad",		ET_Single, 		Param_String						);
 	g_hForward_OnConfigSectionLoadPost		=		CreateGlobalForward(		"CR_OnConfigSectionLoadPost",	ET_Ignore, 		Param_String						);
 	
-	g_hForward_OnForceStartRound 			=		CreateGlobalForward(		"CR_OnForceStartRound",			ET_Event, 		Param_Cell, 		Param_String	);
-	g_hForward_OnForceStartRoundPost		=		CreateGlobalForward(		"CR_OnForceStartRoundPost",		ET_Ignore, 		Param_Cell, 		Param_String	);
+	g_hForward_OnForceRoundStart 			=		CreateGlobalForward(		"CR_OnForceRoundStart",			ET_Event, 		Param_Cell, 		Param_String	);
+	g_hForward_OnForceRoundStartPost		=		CreateGlobalForward(		"CR_OnForceRoundStartPost",		ET_Ignore, 		Param_Cell, 		Param_String	);
 	
 	g_hForward_OnSetNextRound 				=		CreateGlobalForward(		"CR_OnSetNextRound",			ET_Event, 		Param_Cell, 		Param_String	);
 	g_hForward_OnSetNextRoundPost			=		CreateGlobalForward(		"CR_OnSetNextRoundPost",		ET_Ignore, 		Param_Cell, 		Param_String	);
@@ -95,9 +95,9 @@ void Forward_OnConfigSectionLoadPost(const char[] sSection)
 	void 	CR_OnForceRoundStartPost(int iClient, const char[] sName)
 */
 
-bool Forward_OnForceStartRound(char sName[MAX_ROUND_NAME_LENGTH], int iClient)
+bool Forward_OnForceRoundStart(char sName[MAX_ROUND_NAME_LENGTH], int iClient)
 {
-	Call_StartForward(g_hForward_OnForceStartRound);
+	Call_StartForward(g_hForward_OnForceRoundStart);
 	
 	char sNameCopy[MAX_ROUND_NAME_LENGTH];
 	sNameCopy = sName;
@@ -110,7 +110,7 @@ bool Forward_OnForceStartRound(char sName[MAX_ROUND_NAME_LENGTH], int iClient)
 	if(aAction > Plugin_Changed)		return false;
 	else if(aAction == Plugin_Changed)	sName = sNameCopy;
 
-	Call_StartForward(g_hForward_OnForceStartRoundPost);
+	Call_StartForward(g_hForward_OnForceRoundStartPost);
 	
 	Call_PushCell(iClient);
 	Call_PushString(sName);

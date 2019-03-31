@@ -1,13 +1,13 @@
 void HookEvents()
 {
-	HookEvent("round_start", 	Event_Callback, 		EventHookMode_PostNoCopy);
-	HookEvent("round_end", 		Event_Callback, 		EventHookMode_PostNoCopy);
-	HookEvent("player_spawn", 	Event_Callback);
+	HookEvent("round_start", 	Event_Callback, 		EventHookMode_PostNoCopy	);
+	HookEvent("round_end", 		Event_Callback, 		EventHookMode_PostNoCopy	);
+	HookEvent("player_spawn", 	Event_Callback										);
 }
 
 public void Event_Callback(Event hEvent, 	const char[] sName, 	bool bDonBroadcast)
 {
-	switch(sName[7])
+	switch(sName[6])
 	{
 		case 's':
 		{
@@ -19,7 +19,11 @@ public void Event_Callback(Event hEvent, 	const char[] sName, 	bool bDonBroadcas
 			}
 			Forward_OnRoundStart();
 		}
-		case 'e':	g_bRoundEnd = true;
+		case 'e':
+		{
+			g_bRoundEnd = true;
+			Forward_OnRoundEnd();
+		}
 		case '_':
 		{
 			if(g_fRespawn > 0.0)	CreateTimer(	g_fRespawn, Function_TimerSpawn, 

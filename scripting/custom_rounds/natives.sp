@@ -100,7 +100,7 @@ public int Native_StartRound(Handle hPlugin, int numParams)
 		Kv.Rewind();
 		if(sBuffer[0] && Kv.JumpToKey(sBuffer, false))
 		{
-			if(Forward_OnForceStartRound(sBuffer, GetNativeCell(2)) && g_hArray.FindString(sBuffer) != -1)
+			if(Forward_OnForceRoundStart(sBuffer, GetNativeCell(2)) && g_hArray.FindString(sBuffer) != -1)
 			{
 				CS_TerminateRound(0.0, CSRoundEnd_Draw, false);
 				Function_CreateRoundKeyValue(sBuffer, true);
@@ -127,7 +127,7 @@ public int  Native_StartRoundFromKeyValue(Handle hPlugin, int numParams)
 		KvTemp.Rewind();
 		char sBuffer[MAX_ROUND_NAME_LENGTH];
 		KvTemp.GetSectionName(sBuffer, sizeof(sBuffer));
-		if(Forward_OnSetNextRound(sBuffer, GetNativeCell(2)))
+		if(Forward_OnForceRoundStart(sBuffer, GetNativeCell(2)))
 		{
 			Function_CreateRoundKeyValue(_, true, KvTemp);
 			return true;
@@ -146,7 +146,7 @@ public int Native_StopRound(Handle hPlugin, int numParams)
 {
 	if(!KvCurrent && Forward_OnCancelCurrentRound(GetNativeCell(1)))	return false;
 
-	CS_TerminateRound(g_fRestartDelay, CSRoundEnd_Draw, false);	// CSRoundEnd_Draw
+	CS_TerminateRound(g_fRestartDelay, CSRoundEnd_Draw, false);
 	
 	return true;
 }

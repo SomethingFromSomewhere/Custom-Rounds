@@ -83,8 +83,6 @@ public void CR_OnRoundStart(KeyValues Kv)
 				if(Kv.GetSectionName(sWeapon, sizeof(sWeapon)))
 				{
 					g_hWeapons.PushString(sWeapon);
-					Kv.GetString(NULL_STRING, sWeapon, sizeof(sWeapon));
-					if(sWeapon[0])	g_hWeapons.PushString(sWeapon);
 				}
 			}
 			while (Kv.GotoNextKey(false));
@@ -201,7 +199,7 @@ public Action OnWeaponCanUse(int iClient, int weapon)
 	{
 		char sBuffer[32];
 		GetEdictClassname(weapon, sBuffer, sizeof(sBuffer));
-		if((g_bBlockPickUP || (g_bBlockPick && g_hWeapons.FindString(sBuffer) == -1)) && strcmp("defuser", sBuffer[5]) != 0 && strcmp("c4", sBuffer[5]) != 0)	return Plugin_Handled;
+		if((g_bBlockPickUP || (g_bBlockPick && g_hWeapons.FindString(sBuffer) == -1)) && strcmp("defuser", sBuffer[5]) && strcmp("c4", sBuffer[5]) )	return Plugin_Handled;
 	}
 	return Plugin_Continue;
 }

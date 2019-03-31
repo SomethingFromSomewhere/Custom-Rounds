@@ -1,8 +1,7 @@
+#include <custom_rounds>
+
 #pragma semicolon 1
 #pragma newdecls required
-
-#include <custom_rounds>
-#include <cstrike>
 
 public Plugin myinfo =
 {
@@ -12,21 +11,22 @@ public Plugin myinfo =
 	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa"
 };
 
-Handle g_hTimer;
-
+any g_aInfo, g_aAdditionalInfo;
 ArrayList g_hArray;
-int g_iMode, g_iRounds, g_iEvery, g_iRandom;
-bool g_bTimer, g_bReload, g_bWait;
-float g_fTime;
+int g_iMode;
 
 public void OnPluginStart()
 {
 	g_hArray = new ArrayList(ByteCountToCells(MAX_ROUND_NAME_LENGTH));
 }
 
-public void CR_OnConfigLoaded()
+public void CR_OnConfigLoad()
 {
 	g_hArray.Clear();
+}
+
+public void CR_OnConfigLoaded()
+{
 	LoadConfig();
 }
 
@@ -37,80 +37,53 @@ public void CR_OnConfigSectionLoadPost(const char[] sName)
 
 public void CR_OnRoundStart(KeyValues Kv)
 {
-	g_iRounds++;
-	if(Kv)
+	if(g_iMode == 1)
 	{
+		g_aAdditionalInfo++;
 		Check();
 	}
 }
 
 void Check()
 {
+	PrintToChatAll("check iM:%i aI:%i aA:%i", g_iMode, g_aInfo, g_aAdditionalInfo);
 	switch(g_iMode)
 	{
-		case 1:	if(g_iRounds >= g_iEvery)
+		case 1:	if(g_aAdditionalInfo >= g_aInfo)
 		{
-			g_iRounds = 0;
+			g_aAdditionalInfo = 0;
 			ChooseRandom();
 		}
-		case 2:
+		case 2:	if(g_aInfo)
 		{
-			if(g_bWait)
-			{
-				ChooseRandom();
-				g_bWait = false;
-			}
-			if(g_bTimer)
-			{
-				if(g_hTimer != null)
-				{
-					KillTimer(g_hTimer);
-					g_bReload = true;
-				}
-				g_hTimer = CreateTimer(g_fTime, Timer_Rounds, _, TIMER_REPEAT);
-				g_bTimer = false;
-			}
+			ChooseRandom();
+			g_aInfo = false;
 		}
-		case 3:
+		case 3:	if(GetRandomInt(0, 100) >= g_aAdditionalInfo)
 		{
-			if(GetRandomInt(0, g_iRandom) == 0)	ChooseRandom();
+			ChooseRandom();
 		}
 	}
 }
 
 public void OnMapStart()
 {
-	g_iRounds = 0;
-}
-
-public void OnMapEnd()
-{
-	if(g_hTimer != null)
-	{
-		KillTimer(g_hTimer);
-		g_hTimer = null;
-	}
-	g_bReload = false;
+	if(g_iMode == 1) 		g_aAdditionalInfo = 0;
 }
 
 void ChooseRandom()
 {
 	char sBuffer[MAX_ROUND_NAME_LENGTH];
-	g_hArray.GetString(GetRandomInt(0, g_hArray.Length-1), sBuffer, sizeof(sBuffer));
+	if(g_hArray.Length > 0)	g_hArray.GetString(GetRandomInt(0, g_hArray.Length-1), sBuffer, sizeof(sBuffer));
 	if(sBuffer[0])	CR_SetNextRound(sBuffer);
 }
 
 public Action Timer_Rounds(Handle hTimer)
 {
-	g_bWait = false;
-	if(g_iMode != 2)
-	{
-		g_hTimer = null;
-		return Plugin_Stop;
-	}
-	if(CR_IsNextRoundCustom())	g_bWait = true;
-	else	ChooseRandom();
-	return Plugin_Continue;
+	g_aInfo = false;
+	
+	if(CR_IsNextRoundCustom())	g_aInfo = true;
+	else						ChooseRandom();
 }
 
 void LoadConfig()
@@ -120,31 +93,19 @@ void LoadConfig()
 	
 	char sBuffer[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, sBuffer, sizeof(sBuffer), "configs/custom_rounds/autostart.ini");
-	if (!FileToKeyValues(Kv, sBuffer)) SetFailState("Файл конфигурации не найден %s", sBuffer);
-
+	if (!FileToKeyValues(Kv, sBuffer)) SetFailState("Missing config file %s", sBuffer);
+	
 	g_iMode = Kv.GetNum("mode", 1);
+	
 	switch(g_iMode)
 	{
 		case 1:
 		{
-			g_iEvery = Kv.GetNum("rounds", 3);	
-			g_iRounds = 0;
+			g_aInfo = Kv.GetNum("value", 3);	
+			g_aAdditionalInfo = 0;
 		}
-		case 2:
-		{
-			if(g_bReload && g_bTimer && !g_hTimer)
-			{
-				KillTimer(g_hTimer);
-				g_hTimer = CreateTimer(g_fTime, Timer_Rounds, _, TIMER_REPEAT);
-			}
-			g_bTimer = true;
-			g_bReload = false;
-			g_fTime = Kv.GetFloat("seconds", 600.0);
-		}
-		case 3:
-		{
-			g_iRandom = Kv.GetNum("chance", 25);
-		}
+		case 2:	g_aAdditionalInfo = CreateTimer(Kv.GetFloat("value", 600.0), Timer_Rounds, _, TIMER_REPEAT);
+		case 3:	g_aInfo = Kv.GetNum("value", 25);
 	}
 	
 	if (Kv.GotoFirstSubKey())
@@ -152,7 +113,7 @@ void LoadConfig()
 		int i;
 		do
 		{
-			if (Kv.GetSectionName(sBuffer, sizeof(sBuffer)) && (i = g_hArray.FindString(sBuffer)) >= 0)
+			if (Kv.GetSectionName(sBuffer, sizeof(sBuffer)) && (i = g_hArray.FindString(sBuffer)) != -1)
 			{
 				g_hArray.Erase(i);
 			}
@@ -160,4 +121,5 @@ void LoadConfig()
 		while (Kv.GotoNextKey());
 	}
 	delete Kv;
+	
 }

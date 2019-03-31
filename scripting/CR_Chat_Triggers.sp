@@ -30,7 +30,7 @@ public void CR_OnConfigLoad()
 	Kv = CR_GetKeyValue();
 }
 
-public void CR_OnConfigSectionLoad(const char[] sName)
+public void CR_OnConfigSectionLoadPost(const char[] sName)
 {
 	char sBuffer[256];
 	Kv.GetString("chat_force", sBuffer, sizeof(sBuffer));

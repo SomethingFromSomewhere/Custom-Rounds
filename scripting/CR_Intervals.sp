@@ -20,6 +20,8 @@ public void OnPluginStart()
 	ConVar CVAR;
 	(CVAR = CreateConVar("sm_cr_round_interval", "5", "Interval beetwen rounds. 0 - disabled", _, true, 0.0)).AddChangeHook(ChangeCvar_Interval);
 	g_iInterval = CVAR.IntValue;
+	
+	LoadTranslations("custom_rounds.phrases");
 }
 
 public void ChangeCvar_Interval(ConVar convar, const char[] oldValue, const char[] newValue)
@@ -40,9 +42,9 @@ public Action CR_OnSetNextRound(int iClient, char[] sName)
 	{
 		if(iClient)
 		{
-			Plugin_PrintToChat(iClient, "%t%t", "Prefix", "Intervals_Warning");
+			Plugin_PrintToChat(iClient, "%t%t", "Prefix", "CR_Intervals_Warning", g_iRounds);
 		}
-		else PrintToServer("%t%t", "Prefix", "Intervals_Warning");
+		else PrintToServer("%t%t", "Prefix", "CR_Intervals_Warning", g_iRounds);
 
 		return Plugin_Handled;
 	}
@@ -56,9 +58,9 @@ public Action CR_OnForceRoundStart(int iClient, char[] sName)
 	{
 		if(iClient)
 		{
-			Plugin_PrintToChat(iClient, "%t%t", "Prefix", "Intervals_Warning");
+			Plugin_PrintToChat(iClient, "%t%t", "Prefix", "CR_Intervals_Warning", g_iRounds);
 		}
-		else PrintToServer("%t%t", "Prefix", "Intervals_Warning");
+		else PrintToServer("%t%t", "Prefix", "CR_Intervals_Warning", g_iRounds);
 
 		return Plugin_Handled;
 	}
