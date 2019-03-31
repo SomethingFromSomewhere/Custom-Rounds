@@ -18,7 +18,7 @@ Main config file with custom rounds settings located in **configs/custom_rounds/
 	{
 		"Weapons"
 		{
-			"weapon_awp"
+			"weapon_awp"{}
 		}
 		
 		"ammo"			"1"
@@ -35,8 +35,8 @@ Main config file with custom rounds settings located in **configs/custom_rounds/
 	{
 		"Weapons"
 		{
-			"weapon_nova"
-			"weapon_revolver"
+			"weapon_nova"{}
+			"weapon_revolver"{}
 		}
 
 		"no_buy"		"1"
@@ -74,11 +74,11 @@ Provides keys for weapon control
 	
 	"Weapons"					-	Gives specified weapons on each player spawn
 	{
-		"weapon_ak47"
-		"weapon_deagle"
-		"weapon_hegrenade"
-		"weapon_smokegrenade"
-		"weapon_fists"
+		"weapon_ak47"{}
+		"weapon_deagle"{}
+		"weapon_hegrenade"{}
+		"weapon_smokegrenade"{}
+		"weapon_fists"{}
 	}
 ```
 
@@ -211,18 +211,13 @@ Config file located in **configs/custom_rounds/autostart.ini**.
 ```
 "Autostart"
 {
-	"mode"				"1"
-	"rounds"			"5"		//	First mode 	- Every N rounds
-	"seconds"			"300"	//	Second mode - Every N seconds
-	"chance"			"3"		//	Third mode	- Random start.
-	
-	"Drug"						// Ignored rounds.
-	{
-	}
-
-	"Nova + Revolver"
-	{
-	}
+    "mode"       	"1"            // 1 - launch each N rounds.     	| 2 - launch each N seconds.     	| 3 - launch with N chance.
+    "value"        	"6"            // Round number.             		| Seconds.                        	| Chance.
+    
+    
+    // Ignored rounds
+    "Knife"{}
+    "AWP"{}
 }
 ```
 
