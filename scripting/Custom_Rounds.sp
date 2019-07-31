@@ -9,8 +9,8 @@ public Plugin myinfo =
 	name        = 	"Custom Rounds",
 	author      = 	"Someone",
 	description =	"Provides feauture for building custom rounds",
-	version     = 	"2.0",
-	url 		= 	"https://hlmod.ru | https://discord.gg/UfD3dSa"
+	version     = 	"2.1",
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
 #include "custom_rounds/defines.sp"
@@ -48,6 +48,8 @@ public void OnPluginStart()
 	g_hArray = new ArrayList(ByteCountToCells(MAX_ROUND_NAME_LENGTH));
 
 	HookEvents();
+	
+	LoadTranslations("custom_rounds.phrases");
 }
 
 public void OnAllPluginsLoaded()

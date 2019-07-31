@@ -8,7 +8,7 @@ public Plugin myinfo =
 	name        = 	"[CR] Chat",
 	author      = 	"Someone",
 	version     = 	"2.0",
-	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa"
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
 #define Plugin_PrintToChatAll PrintToChatAll

@@ -1,34 +1,51 @@
+#include <custom_rounds>
+
 #pragma semicolon 1
 #pragma newdecls required
-
-#include <custom_rounds>
 
 public Plugin myinfo =
 {
 	name        = 	"[CR] Map Specific Rounds",
 	author      = 	"Someone",
 	version     = 	"2.0",
-	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa",
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
-char g_sCurrentMap[32];
+ArrayList g_hArray;
 
-public bool CR_OnConfigSectionLoad(const char[] sSection)
+public bool CR_OnConfigSectionLoad(const char[] sSection, KeyValues Kv)
 {
-	
+	if(g_hArray && g_hArray.FindString(sSection) == -1)
+	{
+		return false;
+	}
 
+	return true;
 }
 
 public void CR_OnConfigLoad()
 {
+	g_hArray = new ArrayList(ByteCountToCells(MAX_ROUND_NAME_LENGTH));
+	char sCurrentMap[PLATFORM_MAX_PATH];
+	GetCurrentMap(sCurrentMap, sizeof(sCurrentMap));
+	GetMapDisplayName(sCurrentMap, sCurrentMap, sizeof(sCurrentMap));
 	
+	BuildPath(Path_SM, sCurrentMap, sizeof(sCurrentMap), "configs/custom_rounds/maps/%s", sCurrentMap);
+
+	File hFile = OpenFile(sCurrentMap, "r");
+
+	if(hFile)
+	{
+		while (hFile.EndOfFile())
+		{
+			hFile.ReadLine(sCurrentMap, sizeof(sCurrentMap));
+			g_hArray.PushString(sCurrentMap);
+		}
+		delete hFile;
+	}
 }
 
-public void OnMapStart()
+public void CR_OnConfigLoaded()
 {
-	GetCurrentMap(g_sCurrentMap, sizeof(g_sCurrentMap));
-	GetMapDisplayName(g_sCurrentMap, g_sCurrentMap, sizeof(g_sCurrentMap));
-	
-	BuildPath(Path_SM, sBuffer, sizeof(sBuffer), "configs/custom_rounds/msr/%s
-	g_sCurrentMap
+	delete g_hArray;
 }

@@ -9,8 +9,8 @@ public Plugin myinfo =
 {
 	name        = 	"[CR] Buy Zone",
 	author      = 	"Someone",
-	version     = 	"2.0",
-	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa"
+	version     = 	"2.1",
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
 bool g_bNoBuy;
@@ -30,7 +30,7 @@ public void CR_OnRoundEnd(KeyValues Kv)
 
 void SetBuyZones(const char[] sInput)
 {
-	int iEnt;
+	int iEnt = MaxClients+1;
 
 	while ((iEnt = FindEntityByClassname(iEnt, "func_buyzone")) != INVALID_ENT_REFERENCE) 
 	{

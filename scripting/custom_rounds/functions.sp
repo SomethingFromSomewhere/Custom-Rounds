@@ -7,13 +7,13 @@ void Function_CreateRoundKeyValue(const char[] sName = "", bool bType, KeyValues
 		{
 			if(bType)
 			{
-				delete KvCurrent;
+				if(KvCurrent)	delete KvCurrent;
 				KvCurrent = new KeyValues(sName);
 				KvCopySubkeys(Kv, KvCurrent);
 			}
 			else
 			{
-				delete KvNext;
+				if(KvNext)		delete KvNext;
 				KvNext = new KeyValues(sName);
 				KvCopySubkeys(Kv, KvNext);
 			}
@@ -24,12 +24,12 @@ void Function_CreateRoundKeyValue(const char[] sName = "", bool bType, KeyValues
 		KvTemp.Rewind();
 		if(bType)	
 		{
-			delete KvCurrent;
+			if(KvCurrent)	delete KvCurrent;
 			KvCurrent = KvTemp;
 		}
 		else
 		{
-			delete KvNext;
+			if(KvNext)		delete KvNext;
 			KvNext = KvTemp;
 		}
 	}
@@ -51,7 +51,7 @@ public Action Function_TimerSpawn(Handle hTimer, int iUserID)
 
 void Function_LoadConfig()
 {
-	delete Kv;
+	if(Kv)	delete Kv;
 	Kv = new KeyValues("CustomRounds");
 
 	g_hArray.Clear();
@@ -69,10 +69,10 @@ void Function_LoadConfig()
 	{ 
 		do
 		{
-			if(Kv.GetSectionName(sBuffer, sizeof(sBuffer)) && Forward_OnConfigSectionLoad(sBuffer))
+			if(Kv.GetSectionName(sBuffer, sizeof(sBuffer)) && Forward_OnConfigSectionLoad(sBuffer, Kv))
 			{
 				g_hArray.PushString(sBuffer);
-				Forward_OnConfigSectionLoadPost(sBuffer);
+				Forward_OnConfigSectionLoadPost(sBuffer, Kv);
 			}
 		}
 		while (Kv.GotoNextKey());

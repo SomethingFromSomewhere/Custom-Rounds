@@ -64,11 +64,12 @@ void Forward_OnConfigLoaded()
 	bool CR_OnConfigSectionLoad(const char[] sName)
 */
 
-bool Forward_OnConfigSectionLoad(const char[] sSection)
+bool Forward_OnConfigSectionLoad(const char[] sSection, KeyValues hKv)
 {
 	Call_StartForward(g_hForward_OnConfigSectionLoad);
 
 	Call_PushString(sSection);
+	Call_PushCell(hKv);
 	
 	bool bAllow = true;
 	Call_Finish(bAllow);
@@ -80,11 +81,12 @@ bool Forward_OnConfigSectionLoad(const char[] sSection)
 	void CR_OnConfigSectionLoadPost(const char[] sName)
 */
 
-void Forward_OnConfigSectionLoadPost(const char[] sSection)
+void Forward_OnConfigSectionLoadPost(const char[] sSection, KeyValues hKv)
 {
 	Call_StartForward(g_hForward_OnConfigSectionLoadPost);
 	
 	Call_PushString(sSection);
+	Call_PushCell(hKv);
 	
 	Call_Finish();
 }
@@ -256,4 +258,9 @@ void Forward_OnRoundEnd()
 	Call_PushCell(KvCurrent);
 	
 	Call_Finish();
+	
+	if(KvCurrent)
+	{
+		delete KvCurrent;
+	}
 }

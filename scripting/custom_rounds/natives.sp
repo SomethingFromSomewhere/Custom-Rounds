@@ -86,6 +86,7 @@ public int Native_CancelNextRound(Handle hPlugin, int numParams)
 	return true;
 }
 
+
 /*
 	bool CR_StartRound(const char[] sName, int iClient = 0)
 */
@@ -102,7 +103,7 @@ public int Native_StartRound(Handle hPlugin, int numParams)
 		{
 			if(Forward_OnForceRoundStart(sBuffer, GetNativeCell(2)) && g_hArray.FindString(sBuffer) != -1)
 			{
-				CS_TerminateRound(0.0, CSRoundEnd_Draw, false);
+				CS_TerminateRound(0.0, CSRoundEnd_Draw, true);
 				Function_CreateRoundKeyValue(sBuffer, true);
 				return true;
 			}
@@ -266,6 +267,7 @@ public int Native_ReloadConfig(Handle hPlugin, int numParams)
 {	
 	Function_LoadConfig();	
 }
+
 
 /*
 	ArrayList CR_GetArrayOfRounds()

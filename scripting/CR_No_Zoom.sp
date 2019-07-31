@@ -1,15 +1,15 @@
-#pragma semicolon 1
-#pragma newdecls required
-
 #include <custom_rounds>
 #include <sdkhooks>
+
+#pragma semicolon 1
+#pragma newdecls required
 
 public Plugin myinfo =
 {
 	name        = 	"[CR] No Zoom",
 	author      = 	"Someone",
-	version     = 	"2.0",
-	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa",
+	version     = 	"2.1",
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
 
@@ -21,14 +21,20 @@ public void OnPluginStart()
 	m_flNextSecondaryAttack = FindSendPropInfo("CBaseCombatWeapon", "m_flNextSecondaryAttack");
 }
 
-public void OnClientPutInServer(int iClient)
+public Action OnPreThink(int iWeapon)
 {
-	SDKHook(iClient, SDKHook_PreThink, OnPreThink);
-}
+	iWeapon = GetEntPropEnt(iWeapon, Prop_Send, "m_hActiveWeapon");
 
-public Action OnPreThink(int iClient)
-{
-	if(g_bNoZoom)	SetNoScope(GetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon"));
+	if (IsValidEdict(iWeapon))
+	{
+		static char sClassname[32];
+		GetEdictClassname(iWeapon, sClassname, sizeof(sClassname));
+		
+		if (strcmp(sClassname[7], "knife") && strcmp(sClassname[7], "hegrenade") && strcmp(sClassname[7], "incgrenade") && strcmp(sClassname[7], "molotov") && strcmp(sClassname[7], "smokegrenade") && strcmp(sClassname[7], "tagrenade") && strcmp(sClassname[7], "flashbang") && strcmp(sClassname[7], "decoy"))
+		{
+			SetEntDataFloat(iWeapon, m_flNextSecondaryAttack, GetGameTime() + 2.0);
+		}
+	}
 }
 
 public void CR_OnRoundStart(KeyValues Kv)
@@ -41,16 +47,14 @@ public void CR_OnRoundEnd(KeyValues Kv)
 	if(Kv)	g_bNoZoom = false;
 }
 
-void SetNoScope(int iWeapon)
+public void CR_OnPlayerSpawn(int iClient, KeyValues Kv)
 {
-	if (IsValidEdict(iWeapon))
+	if(Kv)
 	{
-		static char sClassname[32];
-		GetEdictClassname(iWeapon, sClassname, sizeof(sClassname));
-		
-		if (strcmp(sClassname[7], "knife") && strcmp(sClassname[7], "hegrenade") && strcmp(sClassname[7], "incgrenade") && strcmp(sClassname[7], "molotov") && strcmp(sClassname[7], "smokegrenade") && strcmp(sClassname[7], "tagrenade") && strcmp(sClassname[7], "flashbang") && strcmp(sClassname[7], "decoy"))
+		if(g_bNoZoom)
 		{
-			SetEntDataFloat(iWeapon, m_flNextSecondaryAttack, GetGameTime() + 2.0);
+			SDKHook(iClient, SDKHook_PreThink, OnPreThink);
 		}
 	}
+	else SDKUnhook(iClient, SDKHook_PreThink, OnPreThink);
 }

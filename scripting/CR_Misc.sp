@@ -8,7 +8,7 @@ public Plugin myinfo =
 	name        = 	"[CR] Misc",
 	author      = 	"Someone",
 	version     = 	"2.0",
-	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa",
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
 bool g_bSave, g_bHasHelmet[MAXPLAYERS+1], g_bSaveArmor[MAXPLAYERS+1], g_bAllowSave, g_bHelmet, g_bUseGravity[MAXPLAYERS+1];

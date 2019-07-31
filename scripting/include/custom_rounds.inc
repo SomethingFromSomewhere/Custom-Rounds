@@ -30,17 +30,19 @@ forward void CR_OnConfigLoaded();
  *	Called once round begin loading from config. 
  *
  *	@param sName			Round name.
+ *	@param Kv				KeyValues with rounds settings.
  *	@return					true to allow, false otherwise.
 */
-forward bool CR_OnConfigSectionLoad(const char[] sName);
+forward bool CR_OnConfigSectionLoad(const char[] sName, KeyValues Kv);
 
 /**
  *	Called once round loaded from config. 
  *
  *	@param sName			Round name.
+ *	@param Kv				KeyValues with rounds settings.
  *	@noreturn
 */
-forward void CR_OnConfigSectionLoadPost(const char[] sName);
+forward void CR_OnConfigSectionLoadPost(const char[] sName, KeyValues Kv);
 
 /**
  *	Called once client or server try to force start custom round.

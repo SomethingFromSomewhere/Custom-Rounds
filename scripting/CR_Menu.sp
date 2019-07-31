@@ -1,16 +1,17 @@
-#pragma semicolon 1
-#pragma newdecls required
-
 #include <sdktools_gamerules>
 #include <adminmenu>
 #include <custom_rounds>
+
+#pragma semicolon 1
+#pragma newdecls required
+
 
 public Plugin myinfo =
 {
 	name        = 	"[CR] Menu",
 	author      = 	"Someone",
-	version     = 	"2.0",
-	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa",
+	version     = 	"2.1",
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
 
@@ -42,7 +43,7 @@ public void CR_OnConfigLoad()
 	g_hMenu.RemoveAllItems();
 }
 
-public void CR_OnConfigSectionLoadPost(const char[] sName)
+public void CR_OnConfigSectionLoadPost(const char[] sName, KeyValues Kv)
 {
 	g_hMenu.AddItem(sName, sName);
 }

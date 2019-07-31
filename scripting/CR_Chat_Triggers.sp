@@ -8,13 +8,11 @@ public Plugin myinfo =
 {
 	name        = 	"[CR] Chat Triggers",
 	author      = 	"Someone",
-	version     = 	"2.0",
-	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa"
+	version     = 	"2.1",
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
 StringMap g_hTrieForce, g_hTrieNext;
-
-KeyValues Kv;
 
 public void OnPluginStart()
 {
@@ -27,10 +25,9 @@ public void CR_OnConfigLoad()
 {
 	g_hTrieForce.Clear();
 	g_hTrieNext.Clear();
-	Kv = CR_GetKeyValue();
 }
 
-public void CR_OnConfigSectionLoadPost(const char[] sName)
+public void CR_OnConfigSectionLoadPost(const char[] sName, KeyValues Kv)
 {
 	char sBuffer[256];
 	Kv.GetString("chat_force", sBuffer, sizeof(sBuffer));
@@ -41,7 +38,7 @@ public void CR_OnConfigSectionLoadPost(const char[] sName)
 
 public void OnClientSayCommand_Post(int iClient, const char[] sCommand, const char[] Args)
 {
-	if(CheckCommandAccess(iClient, "sm_cr", ADMFLAG_GENERIC))
+	if(CheckCommandAccess(iClient, "sm_acr", ADMFLAG_GENERIC))
 	{
 		char sBuffer[256];
 		if(g_hTrieForce.GetString(Args, sBuffer, sizeof(sBuffer)))

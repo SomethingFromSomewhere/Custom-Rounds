@@ -7,8 +7,8 @@ public Plugin myinfo =
 {
 	name        = 	"[CR] Autostart",
 	author      = 	"Someone",
-	version     = 	"2.0",
-	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa"
+	version     = 	"2.1",
+	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
 any g_aInfo, g_aAdditionalInfo;
@@ -30,7 +30,7 @@ public void CR_OnConfigLoaded()
 	LoadConfig();
 }
 
-public void CR_OnConfigSectionLoadPost(const char[] sName)
+public void CR_OnConfigSectionLoadPost(const char[] sName, KeyValues Kv)
 {
 	g_hArray.PushString(sName);
 }
@@ -46,7 +46,6 @@ public void CR_OnRoundStart(KeyValues Kv)
 
 void Check()
 {
-	PrintToChatAll("check iM:%i aI:%i aA:%i", g_iMode, g_aInfo, g_aAdditionalInfo);
 	switch(g_iMode)
 	{
 		case 1:	if(g_aAdditionalInfo >= g_aInfo)
@@ -74,7 +73,9 @@ public void OnMapStart()
 void ChooseRandom()
 {
 	char sBuffer[MAX_ROUND_NAME_LENGTH];
+	
 	if(g_hArray.Length > 0)	g_hArray.GetString(GetRandomInt(0, g_hArray.Length-1), sBuffer, sizeof(sBuffer));
+	
 	if(sBuffer[0])	CR_SetNextRound(sBuffer);
 }
 
@@ -88,7 +89,6 @@ public Action Timer_Rounds(Handle hTimer)
 
 void LoadConfig()
 {
-	g_hArray.Clear();
 	KeyValues Kv = new KeyValues("Autostart");
 	
 	char sBuffer[PLATFORM_MAX_PATH];

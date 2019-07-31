@@ -16,6 +16,7 @@ public void Event_Callback(Event hEvent, 	const char[] sName, 	bool bDonBroadcas
 			if(!KvCurrent && KvNext)
 			{
 				KvCurrent = KvNext;
+				KvNext = null;
 			}
 			Forward_OnRoundStart();
 		}
@@ -40,7 +41,6 @@ public Action CS_OnTerminateRound(float &fDelay, CSRoundEndReason &iReason)
 	if(KvCurrent)	
 	{
 		Forward_OnRoundEnd();
-		delete KvCurrent;
 	}
 }
 
@@ -49,6 +49,6 @@ public void OnMapStart()
 	Function_LoadConfig();
 	
 	g_bRoundEnd 		= 	false;
-	delete KvCurrent;
-	delete KvNext;
+	if(KvCurrent)	delete KvCurrent;
+	if(KvNext)		delete KvNext;
 }

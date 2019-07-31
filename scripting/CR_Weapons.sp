@@ -10,14 +10,13 @@ public Plugin myinfo =
 {
 	name        = 	"[CR] Weapons",
 	author      = 	"Someone",
-	version     = 	"2.0",
+	version     = 	"2.1",
 	url			= 	"https://hlmod.ru/ | https://discord.gg/UfD3dSa",
 };
 
-ArrayList g_hWeapons;
+ArrayList g_hWeapons, g_hSave[MAXPLAYERS+1];
 
-bool g_bSave, g_bClear, g_bNoKnife, g_bUse, g_bSaved[MAXPLAYERS+1], g_bClearKey, g_bBlockPickUP, g_bBlockPick;
-char g_sPrimary[MAXPLAYERS+1][32], g_sSecondary[MAXPLAYERS+1][32];
+bool g_bSave, g_bClear, g_bNoKnife, g_bUse, g_bClearKey, g_bBlockPickUP, g_bBlockPick;
 
 public void OnPluginStart()
 {
@@ -28,7 +27,7 @@ public void OnPluginStart()
 	(CVAR = CreateConVar("sm_cr_weapons_clear_weapon", "1", "Strip all weapons from players, when custom rounds starts with weapons.", _, true, 0.0, true, 1.0)).AddChangeHook(ChangeCvar_Clear);
 	g_bClear = CVAR.BoolValue;
 	
-	g_hWeapons = new ArrayList(ByteCountToCells(64));
+	g_hWeapons = new ArrayList(ByteCountToCells(32));
 	
 	AutoExecConfig(true, "cr_weapons", "sourcemod/custom_rounds");
 }
@@ -48,18 +47,16 @@ public void OnClientPutInServer(int iClient)
 	SDKHook(iClient, SDKHook_WeaponCanUse, OnWeaponCanUse);
 }
 
+public void OnClientDisconnect(int iClient)
+{
+	if(g_hSave[iClient]) delete g_hSave[iClient];
+}
+
 public void OnMapStart()
 {
 	g_bNoKnife = false;
 	g_bUse = false;
 	g_bBlockPick = false;
-	int i;
-	for(i = 1; i <= MaxClients; i++)
-	{
-		g_bSaved[i] = false;
-		g_sPrimary[i][0] = '\0';
-		g_sSecondary[i][0] = '\0';
-	}
 }
 
 
@@ -82,10 +79,16 @@ public void CR_OnRoundStart(KeyValues Kv)
 			{
 				if(Kv.GetSectionName(sWeapon, sizeof(sWeapon)))
 				{
+					if(!strcmp(sWeapon, "give"))			g_hWeapons.Push(0);	
+					else if(!strcmp(sWeapon, "equip"))		g_hWeapons.Push(1);
+					else if(!strcmp(sWeapon, "ignore"))		g_hWeapons.Push(2);
+
+					Kv.GetString(NULL_STRING, sWeapon, sizeof(sWeapon));
 					g_hWeapons.PushString(sWeapon);
 				}
 			}
 			while (Kv.GotoNextKey(false));
+
 			g_bUse = true;
 			Kv.GoBack();
 			Kv.GoBack();
@@ -94,16 +97,7 @@ public void CR_OnRoundStart(KeyValues Kv)
 		g_bBlockPick = view_as<bool>(Kv.GetNum("block_pickup", 0));
 		g_bNoKnife = view_as<bool>(Kv.GetNum("no_knife", 0));
 		g_bClearKey = view_as<bool>(Kv.GetNum("no_weapon", 0));
-		if(view_as<bool>(Kv.GetNum("clear_map", 0)))	ClearMap();
-	}
-	else
-	{
-		for(int iClient = 1; iClient <= MaxClients; iClient++)	if(IsClientInGame(iClient) && IsPlayerAlive(iClient) && g_bSaved[iClient])
-		{
-			if(g_sPrimary[iClient][0])	GivePlayerItem(iClient, g_sPrimary[iClient]);	g_sPrimary[iClient][0] = '\0';
-			if(g_sSecondary[iClient][0])	GivePlayerItem(iClient, g_sSecondary[iClient]);	g_sSecondary[iClient][0] = '\0';
-			g_bSaved[iClient] = false;
-		}
+		if(!Kv.GetNum("clear_map", 0))	ClearMap();
 	}
 }
 
@@ -111,95 +105,117 @@ public void CR_OnPlayerSpawn(int iClient, KeyValues Kv)
 {
 	if(Kv)
 	{
-		if((g_bUse && g_bClear) || g_bClearKey)	ClearWeapons(iClient, (g_bSave && !g_bSaved[iClient]));
+		if((g_bUse && g_bClear) || g_bClearKey)	ClearWeapons(iClient, view_as<int>((g_bSave && !g_hSave[iClient])));
 		if(g_bUse)
 		{
 			char sBuffer[32];
 			int w, iSize = g_hWeapons.Length;
-			for(w = 0; w < iSize; ++w)
+			for(w = 0; w < iSize; w+=2)
 			{
-				g_hWeapons.GetString(w, sBuffer, sizeof(sBuffer));
-				EquipPlayerWeapon(iClient, GivePlayerItem(iClient, sBuffer));
+				switch(g_hWeapons.Get(w))
+				{
+					case 0: 
+					{
+						g_hWeapons.GetString(w+1, sBuffer, sizeof(sBuffer));
+						GivePlayerItem(iClient, sBuffer);
+					}
+					case 1: 
+					{
+						g_hWeapons.GetString(w+1, sBuffer, sizeof(sBuffer));
+						EquipPlayerWeapon(iClient, GivePlayerItem(iClient, sBuffer));
+					}
+					default: continue;
+				}
 			}
 		}
-		if(g_bNoKnife)	RemoveKnife(iClient);
+	}
+	else if(g_hSave[iClient])
+	{
+		ClearWeapons(iClient, 3);
+		char sBuffer[32];
+		for(int i, iLen = g_hSave[iClient].Length; i < iLen; i++)
+		{
+			g_hSave[iClient].GetString(i, sBuffer, sizeof(sBuffer));
+
+			if(		!strcmp(sBuffer[7], "fists") 	|| !strcmp(sBuffer[7], "axe") 
+				|| 	!strcmp(sBuffer[7], "spanner") 	|| !strcmp(sBuffer[7], "hammer"))
+			{
+				EquipPlayerWeapon(iClient, GivePlayerItem(iClient, sBuffer));
+			}
+			else GivePlayerItem(iClient, sBuffer);
+		}
+		delete g_hSave[iClient];
 	}
 }
+
+/*
+public Action WeaponSpawn(Handle hTimer, DataPack hPack)
+{
+	hPack.Reset();
+	EquipPlayerWeapon(hPack.ReadCell(), hPack.ReadCell());
+	
+	delete hPack;
+}
+*/
 
 public void CR_OnRoundEnd(KeyValues Kv)
 {
 	if(g_bUse)
 	{
-		int i;
-		for(i = 1; i <= MaxClients; i++)	if(IsClientInGame(i) && IsPlayerAlive(i))
+		for(int i = 1; i <= MaxClients; i++)	if(IsClientInGame(i) && IsPlayerAlive(i))
 		{
-			ClearWeapons(i);
+			ClearWeapons(i, 1);
 		}
 		g_bBlockPickUP = true;
 	}
 }
 
-void ClearWeapons(int iClient, bool bSave = false)
+void ClearWeapons(int iClient, int iType)
 {
-	int iEnt;
-	for (int i = 0; i <= 3; i++)	if(i != 2)
+	char sBuffer[32];
+	for (int iEnt, i; i <= 3; i++)
     {
+		if(iType != 3 && g_bNoKnife && i == 2) continue;
 		while ((iEnt = GetPlayerWeaponSlot(iClient, i)) != -1)
 		{
-			if(bSave)
+			if(iType == 2)
 			{
-				switch(i)
-				{
-					case 0:
-					{
-						GetEdictClassname(iEnt, g_sPrimary[iClient], sizeof(g_sPrimary[]));
-						g_bSaved[iClient] = true;
-					}
-					case 1:
-					{
-						GetEdictClassname(iEnt, g_sSecondary[iClient], sizeof(g_sPrimary[]));
-						g_bSaved[iClient] = true;
-					}
-				}
+				if(!g_hSave[iClient]) g_hSave[iClient] = new ArrayList(ByteCountToCells(32));
+				GetEdictClassname(iEnt, sBuffer, sizeof(sBuffer));
+				g_hSave[iClient].PushString(sBuffer);
 			}
 			RemovePlayerItem(iClient, iEnt);
-			AcceptEntityInput(iEnt, "Kill");
+			if(iType == 1) AcceptEntityInput(iEnt, "Kill");
 		}
     }
 }
 
 void ClearMap()
 {
-	char sBuffer[32];
+	//char sBuffer[32];
 
-	int e = GetMaxEntities();
-	for(int i = MaxClients; i < e; i++)
+	int iEnt = MaxClients+1;
+	while ((iEnt = FindEntityByClassname(iEnt, "weapon_*")) != INVALID_ENT_REFERENCE)
 	{
-		if(IsValidEdict(i) && GetEntPropEnt(i, Prop_Data, "m_hOwnerEntity") < 0)
+		if(GetEntPropEnt(iEnt, Prop_Data, "m_hOwnerEntity") == 0)	RemoveEdict(iEnt);
+		/*
+		if(IsValidEdict(iEnt) && GetEntPropEnt(iEnt, Prop_Data, "m_hOwnerEntity") < 0 && GetEdictClassname(iEnt, sBuffer, sizeof(sBuffer)))
 		{
-			GetEdictClassname(i, sBuffer, sizeof(sBuffer));
-			if(StrContains(sBuffer, "weapon_") == 0)	RemoveEdict(i);
+			if(StrContains(sBuffer, "weapon_") == 0)	RemoveEdict(iEnt);
 		}
-	}
-}
-
-void RemoveKnife(int iClient)
-{
-	int iEnt;	
-	while ((iEnt = GetPlayerWeaponSlot(iClient, 2)) != -1)
-	{
-		RemovePlayerItem(iClient, iEnt);
-		AcceptEntityInput(iEnt, "Kill");
+		*/
 	}
 }
 
 public Action OnWeaponCanUse(int iClient, int weapon) 
 {
-	if(g_bUse)
+	if(g_bBlockPickUP) return Plugin_Handled;
+
+	if(g_bBlockPick)
 	{
-		char sBuffer[32];
+		static char sBuffer[32];
 		GetEdictClassname(weapon, sBuffer, sizeof(sBuffer));
-		if((g_bBlockPickUP || (g_bBlockPick && g_hWeapons.FindString(sBuffer) == -1)) && strcmp("defuser", sBuffer[5]) && strcmp("c4", sBuffer[5]) )	return Plugin_Handled;
+		if(g_hWeapons.FindString(sBuffer) == -1 && strcmp("defuser", sBuffer[5]) != 0 && strcmp("c4", sBuffer[7]) != 0)	return Plugin_Handled;
 	}
 	return Plugin_Continue;
 }
