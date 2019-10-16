@@ -1,5 +1,6 @@
 void Function_CreateRoundKeyValue(const char[] sName = "", bool bType, KeyValues KvTemp = null)
 {
+	CR_Debug("[Functions] Function 'CreateRoundKeyValue' called. Name %s.", sName);
 	if(!KvTemp)
 	{
 		Kv.Rewind();	
@@ -37,20 +38,22 @@ void Function_CreateRoundKeyValue(const char[] sName = "", bool bType, KeyValues
 
 public void Function_FrameSpawn(int iClient)
 {
-	if((iClient = GetClientOfUserId(iClient)) && IsClientInGame(iClient) && IsPlayerAlive(iClient))
-	{
-		Forward_OnPlayerSpawn(iClient);
-	}
+	CR_Debug("[Functions] Function 'FrameSpawn' called. UserID: %i. Client: %i.", iClient, GetClientOfUserId(iClient));
+
+	if((iClient = GetClientOfUserId(iClient)) && IsPlayerAlive(iClient))	Forward_OnPlayerSpawn(iClient);
 }
 
-public Action Function_TimerSpawn(Handle hTimer, int iUserID)
+public Action Function_TimerSpawn(Handle hTimer, int iClient)
 {
-	if((iUserID = GetClientOfUserId(iUserID)) && IsPlayerAlive(iUserID))	Forward_OnPlayerSpawn(iUserID);
+	CR_Debug("[Functions] Function 'TimerSpawn' called. UserID: %i. Client: %i.", iClient, GetClientOfUserId(iClient));
+
+	if((iClient = GetClientOfUserId(iClient)) && IsPlayerAlive(iClient))	Forward_OnPlayerSpawn(iClient);
 	return Plugin_Stop;
 }
 
 void Function_LoadConfig()
 {
+	CR_Debug("[Functions] Function 'LoadConfig' start call.");
 	if(Kv)	delete Kv;
 	Kv = new KeyValues("CustomRounds");
 
@@ -63,10 +66,11 @@ void Function_LoadConfig()
 	{
 		delete Kv;
 		LogMessage("[WARNING] Missing rounds config file %s", sBuffer);
+		CR_Debug("[Functions] Function 'LoadConfig' call. No Config file.");
 	}
 
 	if (Kv && Kv.GotoFirstSubKey())
-	{ 
+	{
 		do
 		{
 			if(Kv.GetSectionName(sBuffer, sizeof(sBuffer)) && Forward_OnConfigSectionLoad(sBuffer, Kv))
@@ -78,6 +82,8 @@ void Function_LoadConfig()
 		while (Kv.GotoNextKey());
 	}
 
+	CR_Debug("[Functions] Function 'LoadConfig' end call.");
+
 	Forward_OnConfigLoaded();
 }
 
@@ -86,18 +92,27 @@ bool Function_CheckMainKeyValue()
 	if(!Kv)
 	{
 		Function_LoadConfig();
+
+		CR_Debug("[Functions] Function 'CheckMainKeyValue' called. Attempt to load config.");
 		LogMessage("[CR][WARNING] Main config not loaded. Attempting to load main config file...");
+
 		if(!Kv)	
 		{
 			LogError("[CR][ERROR] Main config not loaded!");
+			CR_Debug("[Functions] Function 'CheckMainKeyValue' called. Attempt to load config failed.");
+
 			return false;
 		}
 	}
+
+	CR_Debug("[Functions] Function 'CheckMainKeyValue' called.");
+
 	return true;
 }
 
-void Function_GetRoundNameFromKeyValue(KeyValues KvTarget, char[] sBuffer)
+void Function_GetRoundNameFromKeyValue(KeyValues KvTarget, char[] sBuffer, int iLen)
 {
 	Kv.Rewind();
-	KvTarget.GetSectionName(sBuffer, MAX_ROUND_NAME_LENGTH);
+	KvTarget.GetSectionName(sBuffer, iLen);
+	CR_Debug("[Functions] Function 'GetRoundNameFromKeyValue' called.");
 }

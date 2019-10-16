@@ -300,6 +300,13 @@ native void CR_ReloadConfig();
  */
 native ArrayList CR_GetArrayOfRounds();
 
+/**
+ *  Return round number in array.
+ *	
+ *	@retrun					Round index, or -1 on failure
+ */
+native int CR_GetRoundNumber(const char[] sName);
+
 public SharedPlugin __pl_custom_rounds= 
 {
 	name = "custom_rounds",
@@ -336,5 +343,6 @@ public __pl_custom_rounds_SetNTVOptional()
 	
 	MarkNativeAsOptional("CR_ReloadConfig");
 	MarkNativeAsOptional("CR_GetArrayOfRounds");
+	MarkNativeAsOptional("CR_GetRoundNumber");
 }
 #endif

@@ -13,6 +13,8 @@ public Plugin myinfo =
 	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
+#define DEBUG 0
+
 #include "custom_rounds/defines.sp"
 #include "custom_rounds/functions.sp"
 #include "custom_rounds/natives.sp"
@@ -21,6 +23,10 @@ public Plugin myinfo =
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
+	#if DEBUG > 0
+	BuildPath(Path_SM, g_sLogPath, sizeof(g_sLogPath), "logs/cr.log");
+	#endif
+
 	CreateForwards();
 	CreateNatives();
 
@@ -50,6 +56,7 @@ public void OnPluginStart()
 	HookEvents();
 	
 	LoadTranslations("custom_rounds.phrases");
+
 }
 
 public void OnAllPluginsLoaded()

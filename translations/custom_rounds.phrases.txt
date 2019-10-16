@@ -2,11 +2,8 @@
 {
 	"Prefix"
 	{
-		"en"		"[CR]"
+		"en"		"[CR] "
 	}
-
-
-
 
 	"CR_CHAT_Round_Start"
 	{
@@ -49,9 +46,6 @@
 		"en"		"{1} started custom round {2}."
 		"ru"		"{1} запустил нестандартный раунд {2}."
 	}
-
-
-
 
 	"CR_MENU_No_Next_Custom_Round"
 	{
@@ -123,5 +117,129 @@
 	{
 		"en"		"Choose round"
 		"ru"		"Выбрать раунд"
+	}
+
+	"CR_MENU_Reload_Config"
+	{
+		"en"		"Reload config"
+		"ru"		"Перезагрузить настройки"
+	}
+
+	"CR_MENU_Config_Reloaded"
+	{
+		"en"		"Config reloaded."
+		"ru"		"Настройки перезагружены."
+	}
+
+	"CR_MENU_Not_Working"
+	{
+		"en"		"Menu currently not working."
+		"ru"		"Меню на данный момент недоступно."
+	}
+
+	"CR_VOTES_Not_Available"
+	{
+		"en"		"This round is not available for voting."
+		"ru"		"Этот раунд недоступен для голосования."
+	}
+
+	"CR_VOTES_Maximum_Votes"
+	{
+		"#format"	"{1:i}"
+		"en"		"Your vote limit is reached. Maximum {1}."
+		"ru"		"Вы достигли лимита голосований. Максимум {1}."
+	}
+
+	"CR_VOTES_Voted"
+	{
+		"#format"	"{1:s},{2:i},{3:i}"
+		"en"		"You voted for round {1}. Required [{2}/{3}]."
+		"ru"		"Вы проголосовали за раунд {1}. Требуется [{2}/{3}]."
+	}
+
+	"CR_VOTES_Voted_Announce"
+	{
+		"#format"	"{1:N},{2:s},{3:i},{4:i}"
+		"en"		"{1} voted for launch {2}. Required [{3}/{4}]."
+		"ru"		"{1} проголосовал за запуск {2}. Требуется [{3}/{4}]."
+	}
+
+	"CR_VOTES_Announce"
+	{
+		"#format"	"{1:s}"
+		"en"		"Players successfully voted for launch {1}. Round added to launch queue."
+		"ru"		"Игроки успешно проголосовали за запуск {1}. Раунд добавлен в очередь запуска."
+	}
+
+	"CR_VOTES_Cancel"
+	{
+		"#format"	"{1:s},{2:i},{3:i}"
+		"en"		"You cancel your vote for round {1}. Required [{2}/{3}]."
+		"ru"		"Вы отменили свой голос за раунд {1}.  Требуется [{2}/{3}]."
+	}
+
+	"CR_VOTES_Cancel_Announce"
+	{
+		"#format"	"{1:N},{2:s},{3:i},{4:i}"
+		"en"		"{1} canceled own vote for launch {2}. Required [{3}/{4}]."
+		"ru"		"{1} отменил свой голос за запуск {2}. Требуется [{3}/{4}]."
+	}
+
+	"CR_VOTES_Cancel_Item"
+	{
+		"en"		"Cancel votes"
+		"ru"		"Отменить голоса"
+	}
+
+	"CR_VOTES_Title"
+	{
+		"en"		"Choose round for vote"
+		"ru"		"Выберите раунд для голосования"
+	}
+
+	"CR_VOTES_Title_Votes"
+	{
+		"#format"	"{1:i},{2:i}"
+		"en"		"\nCurrent votes: {1} Maximum votes: {2}"
+		"ru"		"\nГолосов: {1} Максимум голосов: {2}"
+	}
+
+	"CR_VOTES_Player_Leave"
+	{
+		"#format"	"{1:i},{2:i}"
+		"en"		"Due to a player leaving, {1} voting for the round (s) took place. "
+		"ru"		"Из-за выхода игрока состоялось {1} голосования за раунд(-а/ов)."
+	}
+
+	"CR_VOTES_ConVar_Change"
+	{
+		"#format"	"{1:i},{2:i}"
+		"en"		"Due to a console variable change, {1} voting for the round (s) took place. "
+		"ru"		"Из-за смены переменной сервера состоялось {1} голосования за раунд(-а/ов)."
+	}
+
+	"CR_VOTES_Cancel_All"
+	{
+		"en"		"You canceled your votes."
+		"ru"		"Вы отменили свои голоса."
+	}
+
+	"CR_VOTES_Cancel_All_Announce"
+	{
+		"#format"	"{1:N}"
+		"en"		"{1} canceled all own votes."
+		"ru"		"{1} отменил свои голоса."
+	}
+
+	"CR_VOTES_Cancel_No_Votes"
+	{
+		"en"		"You did not vote for the rounds."
+		"ru"		"Вы не голосовали за раунды."
+	}
+
+	"CR_VOTES_Wait"
+	{
+		"en"		"Wait some time before vote."
+		"ru"		"Подождите немного времени перед голосованием."
 	}
 }

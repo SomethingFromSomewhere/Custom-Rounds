@@ -37,3 +37,11 @@ Handle		g_hForward_OnPluginStart,				//	void 	CR_OnPluginStart()
 			g_hForward_OnPlayerSpawn,				//	void 	CR_OnPlayerSpawn(int iClient, KeyValues Kv)
 			g_hForward_OnRoundStart,				//	void 	CR_OnRoundStart(KeyValues Kv)
 			g_hForward_OnRoundEnd;					//	void 	CR_OnRoundEnd(KeyValues Kv)
+
+
+#if 		DEBUG > 0
+	char g_sLogPath[PLATFORM_MAX_PATH];
+	#define CR_Debug(%0)		LogToFile(g_sLogPath,%0)
+#else
+	#define CR_Debug(%0);
+#endif

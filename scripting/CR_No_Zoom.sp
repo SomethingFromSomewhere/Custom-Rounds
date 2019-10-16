@@ -13,7 +13,7 @@ public Plugin myinfo =
 };
 
 
-bool g_bNoZoom;
+bool g_bNoZoom, g_bHooked[MAXPLAYERS+1];
 int m_flNextSecondaryAttack = -1;
 
 public void OnPluginStart()
@@ -49,12 +49,21 @@ public void CR_OnRoundEnd(KeyValues Kv)
 
 public void CR_OnPlayerSpawn(int iClient, KeyValues Kv)
 {
+	if(g_bHooked[iClient])
+	{
+		SDKUnhook(iClient, SDKHook_PreThink, OnPreThink);
+		g_bHooked[iClient] = false;
+	}
 	if(Kv)
 	{
 		if(g_bNoZoom)
 		{
-			SDKHook(iClient, SDKHook_PreThink, OnPreThink);
+			g_bHooked[iClient] = SDKHookEx(iClient, SDKHook_PreThink, OnPreThink);
 		}
 	}
-	else SDKUnhook(iClient, SDKHook_PreThink, OnPreThink);
+}
+
+public void OnClientPutInServer(int iClient)
+{
+	g_bHooked[iClient] = false;
 }

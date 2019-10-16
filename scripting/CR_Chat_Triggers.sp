@@ -12,6 +12,8 @@ public Plugin myinfo =
 	url         = 	"http://hlmod.ru | https://discord.gg/UfD3dSa | https://dev-source.ru/user/61"
 };
 
+#define Plugin_PrintToChat PrintToChat
+
 StringMap g_hTrieForce, g_hTrieNext;
 
 public void OnPluginStart()
@@ -31,33 +33,33 @@ public void CR_OnConfigSectionLoadPost(const char[] sName, KeyValues Kv)
 {
 	char sBuffer[256];
 	Kv.GetString("chat_force", sBuffer, sizeof(sBuffer));
-	if(sBuffer[0])	g_hTrieForce.SetString(sBuffer, sName); sBuffer[0] = '\0';
+	if(sBuffer[0])	g_hTrieForce.SetString(sBuffer, sName);
 	Kv.GetString("chat_next", sBuffer, sizeof(sBuffer));
-	if(sBuffer[0] && !g_hTrieForce.GetString(sName, "", 0))	g_hTrieNext.SetString(sBuffer, sName);	sBuffer[0] = '\0';
+	if(sBuffer[0] && !g_hTrieForce.GetString(sName, "", 0))	g_hTrieNext.SetString(sBuffer, sName);
 }
 
-public void OnClientSayCommand_Post(int iClient, const char[] sCommand, const char[] Args)
+public void OnClientSayCommand_Post(int iClient, const char[] sCommand, const char[] sArgs)
 {
 	if(CheckCommandAccess(iClient, "sm_acr", ADMFLAG_GENERIC))
 	{
 		char sBuffer[256];
-		if(g_hTrieForce.GetString(Args, sBuffer, sizeof(sBuffer)))
+		if(g_hTrieForce.GetString(sArgs, sBuffer, sizeof(sBuffer)))
 		{
 			if(!CR_IsRoundEnd())
 			{
 				if(GameRules_GetProp("m_bWarmupPeriod") != 1)
 				{
-					if(!CR_StartRound(sBuffer, iClient))	PrintToChat(iClient, "%t %t", "Prefix", "CR_MENU_Interval");
+					if(!CR_StartRound(sBuffer, iClient))	Plugin_PrintToChat(iClient, "%t%t", "Prefix", "CR_MENU_Interval");
 				}
-				else	PrintToChat(iClient, "%t %t", "Prefix", "CR_MENU_Warmup");
+				else	Plugin_PrintToChat(iClient, "%t%t", "Prefix", "CR_MENU_Warmup");
 			}
-			else	PrintToChat(iClient, "%t %t", "Prefix", "CR_MENU_Round_End");
+			else	Plugin_PrintToChat(iClient, "%t%t", "Prefix", "CR_MENU_Round_End");
 			return;
 		}
 		
-		if(g_hTrieNext.GetString(Args, sBuffer, sizeof(sBuffer)))
+		if(g_hTrieNext.GetString(sArgs, sBuffer, sizeof(sBuffer)))
 		{
-			if(!CR_SetNextRound(sBuffer, iClient))	PrintToChat(iClient, "%t %t", "Prefix", "CR_MENU_Interval");
+			if(!CR_SetNextRound(sBuffer, iClient))	Plugin_PrintToChat(iClient, "%t%t", "Prefix", "CR_MENU_Interval");
 		}
 	}
 }
