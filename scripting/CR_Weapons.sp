@@ -94,6 +94,7 @@ public void CR_OnRoundStart(KeyValues Kv)
 					if(!strcmp(sWeapon, "give"))			g_hWeapons.Push(0);	
 					else if(!strcmp(sWeapon, "equip"))		g_hWeapons.Push(1);
 					else if(!strcmp(sWeapon, "ignore"))		g_hWeapons.Push(2);
+					else									continue;
 
 					Kv.GetString(NULL_STRING, sWeapon, sizeof(sWeapon));
 					sWeapon[0] == 'w' ? strcopy(sWeapon, sizeof(sWeapon), sWeapon[7]):strcopy(sWeapon, sizeof(sWeapon), sWeapon[5]);
@@ -117,14 +118,14 @@ public void CR_OnRoundStart(KeyValues Kv)
 		g_bBlockPick = view_as<bool>(Kv.GetNum("block_pickup", 0));
 		g_bNoKnife = view_as<bool>(Kv.GetNum("no_knife", 0));
 		
+		g_hWeapons.Push(2);
+		g_hWeapons.Push(CSWeapon_DEFUSER);
+		g_hWeapons.Push(2);
+		g_hWeapons.Push(CSWeapon_C4);
 		if(g_bBlockPick && !g_bNoKnife)
 		{
 			g_hWeapons.Push(2);
 			g_hWeapons.Push(CSWeapon_KNIFE);
-			g_hWeapons.Push(2);
-			g_hWeapons.Push(CSWeapon_DEFUSER);
-			g_hWeapons.Push(2);
-			g_hWeapons.Push(CSWeapon_C4);
 			if(g_iEngine == Engine_CSGO)
 			{
 				g_hWeapons.Push(2);
@@ -157,6 +158,8 @@ public void CR_OnRoundStart(KeyValues Kv)
 				g_hWeapons.Push(CSWeapon_KNIFE_GYPSY_JACKKNIFE);
 				g_hWeapons.Push(2);
 				g_hWeapons.Push(CSWeapon_KNIFE_WIDOWMAKER);
+				g_hWeapons.Push(2);
+				g_hWeapons.Push(503);	// CSWeapon_KNIFE_20
 			}
 
 

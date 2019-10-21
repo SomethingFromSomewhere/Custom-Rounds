@@ -40,14 +40,14 @@ public void Function_FrameSpawn(int iClient)
 {
 	CR_Debug("[Functions] Function 'FrameSpawn' called. UserID: %i. Client: %i.", iClient, GetClientOfUserId(iClient));
 
-	if((iClient = GetClientOfUserId(iClient)) && IsPlayerAlive(iClient))	Forward_OnPlayerSpawn(iClient);
+	if((iClient = GetClientOfUserId(iClient)) && IsClientInGame(iClient) && IsPlayerAlive(iClient))	Forward_OnPlayerSpawn(iClient);
 }
 
 public Action Function_TimerSpawn(Handle hTimer, int iClient)
 {
 	CR_Debug("[Functions] Function 'TimerSpawn' called. UserID: %i. Client: %i.", iClient, GetClientOfUserId(iClient));
 
-	if((iClient = GetClientOfUserId(iClient)) && IsPlayerAlive(iClient))	Forward_OnPlayerSpawn(iClient);
+	if((iClient = GetClientOfUserId(iClient)) && IsClientInGame(iClient) && IsPlayerAlive(iClient))	Forward_OnPlayerSpawn(iClient);
 	return Plugin_Stop;
 }
 
