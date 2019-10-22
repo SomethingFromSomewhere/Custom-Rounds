@@ -137,6 +137,13 @@
 		"ru"		"Меню на данный момент недоступно."
 	}
 
+	"CR_Intervals_Warning"
+	{
+		"#format"	"{1:i}"
+		"en"		"Wait for {1} rounds before launch custom round."
+		"ru"		"Подождите еще {1} раунд(-а/-ов) перед запуском нестандартного раунда."
+	}
+
 	"CR_VOTES_Not_Available"
 	{
 		"en"		"This round is not available for voting."
