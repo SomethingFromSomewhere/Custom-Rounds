@@ -34,13 +34,13 @@ Main config file with custom rounds settings located in **configs/custom_rounds/
 		"Weapons"
 		{
 			"give"      "weapon_nova"
-            "give"      "weapon_revoler"
+            		"give"      "weapon_revoler"
 		}
 		"no_buy"		"1"
 		"clear_weapon"	"1"
 	}
 
-    "Fists"
+	Fists"
 	{
 		"Weapons"
 		{
@@ -60,7 +60,6 @@ Main config file with custom rounds settings located in **configs/custom_rounds/
 	}
 }
 ```
-
 
 
 ## [Menu](https://github.com/SomethingFromSomewhere/Custom-Rounds/blob/master/scripting/CR_Menu.sp)
