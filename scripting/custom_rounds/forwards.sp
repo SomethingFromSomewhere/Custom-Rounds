@@ -110,7 +110,7 @@ void Forward_OnConfigSectionLoadPost(const char[] sSection, KeyValues hKv)
 	void 	CR_OnForceRoundStartPost(int iClient, const char[] sName)
 */
 
-bool Forward_OnForceRoundStart(char[] sName, int iClient)
+bool Forward_OnForceRoundStart(char sName[MAX_ROUND_NAME_LENGTH], int iClient)
 {
 	Call_StartForward(g_hForward_OnForceRoundStart);
 
@@ -125,8 +125,11 @@ bool Forward_OnForceRoundStart(char[] sName, int iClient)
 
 	CR_Debug("[Forwards] Forward 'OnForceRoundStart' called. Client: %i. Round: %s. Copy: %s. Action: %i.", iClient, sName, sNameCopy, aAction);
 
-	if(aAction > Plugin_Changed)		return false;
-	else if(aAction == Plugin_Changed)	strcopy(sName, MAX_ROUND_NAME_LENGTH, sNameCopy);
+	switch(aAction)
+	{
+		case Plugin_Stop, Plugin_Handled: 	return false;
+		case Plugin_Changed: 				sName = sNameCopy;
+	}
 
 	Call_StartForward(g_hForward_OnForceRoundStartPost);
 
@@ -146,7 +149,7 @@ bool Forward_OnForceRoundStart(char[] sName, int iClient)
 	void 	CR_OnSetNextRoundPost(int iClient, const char[] sName)
 */
 
-bool Forward_OnSetNextRound(char[] sName, int iClient)
+bool Forward_OnSetNextRound(char sName[MAX_ROUND_NAME_LENGTH], int iClient)
 {
 	Call_StartForward(g_hForward_OnSetNextRound);
 
@@ -161,8 +164,11 @@ bool Forward_OnSetNextRound(char[] sName, int iClient)
 
 	CR_Debug("[Forwards] Forward 'OnSetNextRound' called. Client: %i. Round: %s. Copy: %s Action: %i.", iClient, sName, sNameCopy, aAction);
 
-	if(aAction > Plugin_Changed)		return false;
-	else if(aAction == Plugin_Changed)	strcopy(sName, MAX_ROUND_NAME_LENGTH, sNameCopy);
+	switch(aAction)
+	{
+		case Plugin_Stop, Plugin_Handled: 	return false;
+		case Plugin_Changed: 				sName = sNameCopy;
+	}
 
 	Call_StartForward(g_hForward_OnSetNextRoundPost);
 

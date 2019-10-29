@@ -34,9 +34,8 @@ public int Native_SetNextRound(Handle hPlugin, int iLen)
 	CR_Debug("[Natives] Native 'SetNextRound' start call.");
 	if(Function_CheckMainKeyValue())
 	{
-		GetNativeStringLength(1, iLen);
-		char[] sBuffer = new char[++iLen];
-		GetNativeString(1, sBuffer, iLen);
+		char sBuffer[MAX_ROUND_NAME_LENGTH];
+		GetNativeString(1, sBuffer, sizeof(sBuffer));
 
 		Kv.Rewind();	
 		if(sBuffer[0] && Kv.JumpToKey(sBuffer, false))
@@ -102,14 +101,13 @@ public int Native_CancelNextRound(Handle hPlugin, int numParams)
 	bool CR_StartRound(const char[] sName, int iClient = 0)
 */
 
-public int Native_StartRound(Handle hPlugin, int iLen)
+public int Native_StartRound(Handle hPlugin, int iNumParams)
 {
 	CR_Debug("[Natives] Native 'StartRound' start call.");
 	if(Function_CheckMainKeyValue())
 	{
-		GetNativeStringLength(1, iLen);
-		char[] sBuffer = new char[++iLen];
-		GetNativeString(1, sBuffer, iLen);
+		char sBuffer[MAX_ROUND_NAME_LENGTH];
+		GetNativeString(1, sBuffer, sizeof(sBuffer));
 	
 		Kv.Rewind();
 		if(sBuffer[0] && Kv.JumpToKey(sBuffer, false))
