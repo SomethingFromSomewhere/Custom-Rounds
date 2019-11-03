@@ -40,7 +40,7 @@ Main config file with custom rounds settings located in **configs/custom_rounds/
 		"clear_weapon"	"1"
 	}
 
-	Fists"
+	"Fists"
 	{
 		"Weapons"
 		{
