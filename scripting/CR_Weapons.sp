@@ -51,11 +51,6 @@ public void ChangeCvar_Clear(ConVar convar, const char[] oldValue, const char[] 
 	g_bClear = convar.BoolValue;
 }
 
-public void OnClientPutInServer(int iClient)
-{
-	SDKHook(iClient, SDKHook_WeaponCanUse, OnWeaponCanUse);
-}
-
 public void OnClientDisconnect(int iClient)
 {
 	if(g_hSave[iClient]) delete g_hSave[iClient];
@@ -173,6 +168,7 @@ public void CR_OnRoundStart(KeyValues Kv)
 
 public void CR_OnPlayerSpawn(int iClient, KeyValues Kv)
 {
+	SDKUnhook(iClient, SDKHook_WeaponCanUse, OnWeaponCanUse);
 	if(Kv)
 	{
 		if((g_bUse && g_bClear) || g_bClearKey)	ClearWeapons(iClient, 2);
@@ -199,6 +195,7 @@ public void CR_OnPlayerSpawn(int iClient, KeyValues Kv)
 				}
 			}
 			SetEntData(iClient, g_iTeam, iTeam, 4, false);
+			SDKHook(iClient, SDKHook_WeaponCanUse, OnWeaponCanUse);
 		}
 	}
 	else if(g_bSave && g_hSave[iClient])
