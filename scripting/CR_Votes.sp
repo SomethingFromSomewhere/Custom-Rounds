@@ -55,6 +55,13 @@ public void OnPluginStart()
 	AutoExecConfig(true, "cr_votes", "sourcemod/custom_rounds");
 
 	LoadTranslations("custom_rounds.phrases");
+
+
+	for(int i = 1; i <= MaxClients; i++) if(IsClientInGame(i) && !IsFakeClient(i) && !g_hPlayerVotes[i]){
+		g_hPlayerVotes[i] = new ArrayList();
+		++g_iPlayers;
+		CountRatio();
+	}
 }
 
 public void OnMapStart()
@@ -266,9 +273,9 @@ bool IsValidForCheck(int iClient)
 	return IsClientInGame(iClient) && !IsFakeClient(iClient);
 }
 
-public void OnClientPostAdminCheck(int iClient)
+public void OnClientPutInServer(int iClient)
 {
-	if(!IsFakeClient(iClient))
+	if(!IsFakeClient(iClient) && !g_hPlayerVotes[iClient])
 	{
 		g_hPlayerVotes[iClient] = new ArrayList();
 		++g_iPlayers;
