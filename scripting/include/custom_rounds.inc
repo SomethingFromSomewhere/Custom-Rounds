@@ -138,6 +138,14 @@ forward void CR_OnCancelNextRoundPost(int iClient, const char[] sName);
 forward void CR_OnPlayerSpawn(int iClient, KeyValues Kv);
 
 /**
+ *	Called every time before the start of a round.
+ *
+ *	@param Kv				KeyValue with round section.
+ *	@noreturn
+*/
+forward void CR_OnPreRoundStart(KeyValues Kv);
+
+/**
  *	Called every time when round starts. 
  *
  *	@param Kv				KeyValue with round section.
