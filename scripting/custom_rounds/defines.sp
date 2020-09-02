@@ -35,6 +35,7 @@ Handle		g_hForward_OnPluginStart,				//	void 	CR_OnPluginStart()
 			
 			
 			g_hForward_OnPlayerSpawn,				//	void 	CR_OnPlayerSpawn(int iClient, KeyValues Kv)
+			g_hForward_OnPreRoundStart,				//	void 	CR_OnPreRoundStart(KeyValues Kv)
 			g_hForward_OnRoundStart,				//	void 	CR_OnRoundStart(KeyValues Kv)
 			g_hForward_OnRoundEnd;					//	void 	CR_OnRoundEnd(KeyValues Kv)
 
