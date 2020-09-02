@@ -20,6 +20,7 @@ void CreateForwards()
 	g_hForward_OnCancelNextRoundPost		=		CreateGlobalForward(		"CR_OnCancelNextRoundPost",		ET_Ignore, 		Param_Cell, 		Param_String	);
 
 	g_hForward_OnPlayerSpawn 				=		CreateGlobalForward(		"CR_OnPlayerSpawn",				ET_Ignore, 		Param_Cell,			Param_Cell		);
+	g_hForward_OnPreRoundStart 				=		CreateGlobalForward(		"CR_OnPreRoundStart", 			ET_Ignore, 		Param_Cell							);
 	g_hForward_OnRoundStart 				=		CreateGlobalForward(		"CR_OnRoundStart", 				ET_Ignore, 		Param_Cell							);
 	g_hForward_OnRoundEnd 					=		CreateGlobalForward(		"CR_OnRoundEnd",				ET_Ignore, 		Param_Cell							);
 
@@ -269,6 +270,22 @@ void Forward_OnPlayerSpawn(int iClient)
 	Call_Finish();
 
 	CR_Debug("[Forwards] Forward 'OnPlayerSpawn' called. Client: %i.", iClient);
+}
+
+
+/*
+	void 	CR_OnPreRoundStart(KeyValues Kv)
+*/
+
+void Forward_OnPreRoundStart()
+{
+	Call_StartForward(g_hForward_OnPreRoundStart);
+	
+	Call_PushCell(KvCurrent);
+	
+	Call_Finish();
+
+	CR_Debug("[Forwards] Forward 'OnPreRoundStart' called.");
 }
 
 
