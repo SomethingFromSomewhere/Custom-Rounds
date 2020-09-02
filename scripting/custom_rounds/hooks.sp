@@ -1,5 +1,6 @@
 void HookEvents()
 {
+	HookEvent("round_prestart", Event_Callback, 		EventHookMode_PostNoCopy	);
 	HookEvent("round_start", 	Event_Callback, 		EventHookMode_PostNoCopy	);
 	HookEvent("round_end", 		Event_Callback, 		EventHookMode_PostNoCopy	);
 	HookEvent("player_spawn", 	Event_Callback										);
@@ -11,6 +12,19 @@ public void Event_Callback(Event hEvent, 	const char[] sName, 	bool bDonBroadcas
 {
 	switch(sName[6])
 	{
+		case 'p':
+		{
+			CR_Debug("[Hooks] Event 'round_prestart' called.");
+
+			g_bRoundEnd = false;
+
+			if(!KvCurrent && KvNext)
+			{
+				KvCurrent = KvNext;
+				KvNext = null;
+			}
+			Forward_OnPreRoundStart();
+		}
 		case 's':
 		{
 			CR_Debug("[Hooks] Event 'round_start' called.");
